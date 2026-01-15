@@ -3,3 +3,11 @@ This is just a placeholder blank stylesheet so as to support adding custom style
 
 Read https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#bundling-custom-css-with-themes-assets for more info
 */
+
+/* 自定义 Tag 样式为紫色按钮 */
+.post-tags a {
+    background-color: #8a2be2; /* 紫色 (BlueViolet) */
+    color: white !important;   /* 强制文字白色 */
+    padding: 5px 10px;         /* 增加内边距 */
+    border-radius: 6px;        /* 圆角 */
+}
