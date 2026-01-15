@@ -16,5 +16,5 @@ Welcome to my first blog post! This is where I will share my thoughts, experienc
 Feel free to leave comments and share your feedback. Looking forward to connecting with you all!
 
 ### Recommended Books
-
+here is one book I write by myself for learning probability:
 {{< pdf src="https://ictuvk123.github.io/shared/prob.pdf" >}}
