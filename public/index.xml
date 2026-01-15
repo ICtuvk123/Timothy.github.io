@@ -20,8 +20,7 @@
 $$\int_a^b f(x) , dx$$
 $$\frac{d}{dx}e^x = e^x$$
 $$\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}$$
-$$\lim_{x \to 0} \frac{\sin x}{x} = 1$$&lt;/p&gt;
-&lt;p&gt;&lt;img alt=&#34;alt text&#34; loading=&#34;lazy&#34; src=&#34;http://localhost:1313/picture/datapath.png&#34;&gt;&lt;/p&gt;</description>
+$$\lim_{x \to 0} \frac{\sin x}{x} = 1$$&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

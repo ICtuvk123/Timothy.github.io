@@ -1,0 +1,83 @@
+{{ define "main" }}
+<!-- 1. Top Section: Profile Header -->
+<div class="profile-header">
+    <img src="https://github.com/ICtuvk123.png" alt="avatar" class="profile-avatar">
+    <div class="profile-info">
+        <h1>{{ site.Params.homeInfoParams.Title | default site.Params.author }}</h1>
+        <p>{{ site.Params.homeInfoParams.Content | default site.Params.description | markdownify }}</p>
+        <div class="profile-social">
+            {{- partial "social_icons.html" (dict "socialIcons" site.Params.socialIcons) -}}
+        </div>
+    </div>
+</div>
+
+<!-- 2. Bottom Section: Content Wrapper (Flexbox) -->
+<div class="content-wrapper">
+    <!-- Left: Post List -->
+    <div class="post-list">
+        {{ $pages := union .RegularPages .Sections }}
+        {{ if .Site.Params.mainSections }}
+            {{ $pages = where .Site.RegularPages "Type" "in" .Site.Params.mainSections }}
+        {{ end }}
+        {{ $paginator := .Paginate $pages }}
+
+        {{ range $paginator.Pages }}
+        <article class="post-entry">
+            {{- $isHidden := .Params.cover.hidden | default site.Params.cover.hiddenInList }}
+            {{- partial "cover.html" (dict "cxt" . "IsHome" true "isHidden" $isHidden) }}
+            <header class="entry-header">
+                <h2>
+                    {{ .Title }}
+                    {{- if .Draft }}<sup><span class="entry-isdraft">&nbsp;&nbsp;[draft]</span></sup>{{- end }}
+                </h2>
+            </header>
+            {{- if (ne .Params.hideSummary true) }}
+            <div class="entry-content">
+                <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+            </div>
+            {{- end }}
+            <footer class="entry-footer">
+                {{- partial "post_meta.html" . -}}
+            </footer>
+            <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+        </article>
+        {{ end }}
+
+        <!-- 分页器 -->
+        {{- if gt $paginator.TotalPages 1 }}
+        <footer class="page-footer">
+            <nav class="pagination">
+                {{- if $paginator.HasPrev }}
+                <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">« {{ i18n "prev_page" }}</a>
+                {{- end }}
+                {{- if $paginator.HasNext }}
+                <a class="next" href="{{ $paginator.Next.URL | absURL }}">{{ i18n "next_page" }} »</a>
+                {{- end }}
+            </nav>
+        </footer>
+        {{- end }}
+    </div>
+
+    <!-- Right: Sidebar -->
+    <aside class="sidebar">
+        <!-- 1. 标签云 -->
+        <div class="sidebar-card tags-widget">
+            <h3 class="widget-title">Explore Tags</h3>
+            <div class="tags-list">
+                {{ range $name, $taxonomy := site.Taxonomies.tags }}
+                <a href="{{ "/tags/" | relLangURL }}{{ $name | urlize }}">{{ $name }} <span class="tag-count">({{ .Count }})</span></a>
+                {{ end }}
+            </div>
+        </div>
+
+        <!-- 2. 订阅/Newsletter -->
+        <div class="sidebar-card newsletter-widget">
+            <h3 class="widget-title">Newsletter</h3>
+            <p>Get the latest posts delivered right to your inbox.</p>
+            <div class="newsletter-box">
+                <a href="/index.xml" class="rss-button">Subscribe via RSS</a>
+            </div>
+        </div>
+    </aside>
+</div>
+{{ end }}

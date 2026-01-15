@@ -3,38 +3,58 @@ languageCode = "en-us"
 title = "Timothy's Blog"
 theme = "PaperMod"
 
+[outputs]
+    home = ["HTML", "RSS", "JSON"]
+
+[menu]
+    [[menu.main]]
+        identifier = "archives"
+        name = "Archives"
+        url = "/archives/"
+        weight = 10
+    [[menu.main]]
+        identifier = "search"
+        name = "Search"
+        url = "/search/"
+        weight = 20
+    [[menu.main]]
+        identifier = "tags"
+        name = "Tags"
+        url = "/tags/"
+        weight = 30
+
 [params]
     env = "production"
     title = "Timothy's Blog"
     description = "AI, Math, and CS Notes"
     author = "Timothy"
 
-    ShowToc = true          # 自动生成文章目录
-    TocOpen = false         
-    math = true             # 开启 LaTeX 数学公式支持
+    # 功能开关
+    ShowToc = true
+    TocOpen = false
+    math = true
+    ShowReadingTime = true
+    ShowBreadCrumbs = true
 
-    # 首页信息
+    # 首页配置
     [params.homeInfoParams]
-        Title = "Hi there 👋"
-        Content = "Welcome to my technical blog. I focus on AI and CS. This is where I share my notes and insights."
+        Title = "Timothy's Playground"
+        Content = "Hi there! 👋 I am a student at WHU (CS & AI). I have a strong passion for Mathematics and Artificial Intelligence. Welcome to my blog!"
 
-# GitHub 链接
+    # 社交图标 (每个必须独立)
     [[params.socialIcons]]
         name = "github"
         url = "https://github.com/ICtuvk123"
 
-    # Gmail 链接
     [[params.socialIcons]]
         name = "email"
         url = "mailto:zhutianci0820@gmail.com"
 
-    # 武大邮箱
     [[params.socialIcons]]
-        name = "email"
-        url = "mailto:zhutianci@whu.edu.cn"
+        name = "qq"
+        url = "https://wpa.qq.com/msgrd?v=3&uin=1283177969&site=qq&menu=yes"
 
-    # QQ 链接
-    [[params.socialIcons]]
-    	name = "qq"
-    	url = "tencent://message/?uin=1283177969"
-
+[markup]
+    [markup.goldmark]
+        [markup.goldmark.renderer]
+            unsafe = true  # 允许在 Markdown 中写 HTML

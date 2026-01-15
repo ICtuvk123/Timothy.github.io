@@ -1,0 +1,179 @@
+/* 1. 顶部导航栏：毛玻璃效果 (Glassmorphism) */
+.nav {
+    background-color: rgba(var(--theme), 0.8) !important; /* 半透明背景 */
+    backdrop-filter: blur(12px); /* 模糊效果 */
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.1); /* 极淡的分割线 */
+    position: sticky; /* 确保吸顶 */
+    top: 0;
+    z-index: 100;
+}
+
+/* 2. 文章卡片：悬浮动效与质感 (Hover Effects) */
+.post-entry {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 16px; /* 更大的圆角 */
+    border: 1px solid transparent; /* 预留边框位置 */
+}
+
+.post-entry:hover {
+    transform: translateY(-6px); /* 向上浮动 */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08); /* 柔和的投影 */
+    background-color: var(--entry); /* 确保背景色存在 */
+    border-color: rgba(128, 128, 128, 0.1);
+}
+
+/* 3. 封面图优化 */
+.entry-cover {
+    margin-bottom: 1rem;
+}
+
+.entry-cover img {
+    border-radius: 12px; /* 图片圆角 */
+    transition: transform 0.5s ease;
+}
+
+.post-entry:hover .entry-cover img {
+    transform: scale(1.02); /* 图片微放大 */
+}
+
+/* 4. 标签 (Tags) 样式优化 */
+.post-tags a {
+    border-radius: 6px;
+    background: rgba(128, 128, 128, 0.1);
+    padding: 4px 10px;
+}
+
+/* --- 5. Top Section: Profile Header --- */
+.profile-header {
+    text-align: center;
+    padding: 40px 20px;
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+    animation: fade-in 0.5s ease-in;
+}
+
+.profile-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    object-fit: cover;
+}
+
+.profile-social {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+/* --- 6. Bottom Section: Layout Fix --- */
+.list .main {
+    max-width: 1200px; /* 强制加宽容器以容纳双栏 */
+    padding: 0 20px;
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.post-list {
+    flex: 3;
+    min-width: 0; /* 防止内容撑破 Flex 容器 */
+}
+
+.sidebar {
+    flex: 1;
+    min-width: 250px;
+    position: sticky;
+    top: 90px;
+}
+
+/* 响应式：小于 768px 时垂直排列 */
+@media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        position: static;
+        margin-top: 40px;
+    }
+}
+
+/* --- 7. Advanced Card Styling --- */
+.post-entry, .sidebar-card {
+    background: var(--entry);
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    padding: 24px;
+    border: 1px solid rgba(0,0,0,0.03);
+    margin-bottom: 24px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-entry:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+}
+
+.widget-title {
+    font-size: 18px;
+    margin-bottom: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid rgba(128,128,128,0.1);
+    padding-bottom: 10px;
+}
+
+/* --- 8. Tags as Buttons --- */
+.tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.tags-list a {
+    display: inline-block;
+    background: rgba(128, 128, 128, 0.05);
+    padding: 8px 18px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    text-decoration: none;
+    color: var(--secondary);
+    border: 1px solid rgba(128, 128, 128, 0.1);
+}
+
+.tags-list a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* 炫酷紫蓝渐变 */
+    color: white;
+    border-color: transparent;
+}
+
+/* Newsletter Button */
+.rss-button {
+    display: block;
+    text-align: center;
+    background: linear-gradient(90deg, #f6d365 0%, #fda085 100%); /* 浅黄渐变 (Sunny Morning) */
+    color: white !important;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(253, 160, 133, 0.3); /* 暖橙色弥散光影 */
+    letter-spacing: 0.5px;
+}
+
+.rss-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(253, 160, 133, 0.5);
+    filter: brightness(1.1);
+}
