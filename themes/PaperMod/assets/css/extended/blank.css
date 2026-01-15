@@ -4,10 +4,28 @@ This is just a placeholder blank stylesheet so as to support adding custom style
 Read https://github.com/adityatelange/hugo-PaperMod/wiki/FAQs#bundling-custom-css-with-themes-assets for more info
 */
 
-/* 自定义 Tag 样式为紫色按钮 */
-.post-tags a {
-    background-color: #8a2be2; /* 紫色 (BlueViolet) */
-    color: white !important;   /* 强制文字白色 */
-    padding: 5px 10px;         /* 增加内边距 */
-    border-radius: 6px;        /* 圆角 */
+/* 1. 初始界面/列表页的 Tag (紫色按钮) */
+.post-entry .post-tags a {
+    background-color: #8a2be2; /* 纯紫色 */
+    color: white !important;
+    padding: 5px 10px;
+    border-radius: 6px;        /* 小圆角 */
+    transition: opacity 0.3s;
+}
+
+/* 2. 文章内部的 Tag (圆形高级渐变彩色) */
+.post-single .post-tags a {
+    /* 渐变色：粉色到蓝紫色的高级渐变 */
+    background: linear-gradient(135deg, #fc5c7d 0%, #6a82fb 100%);
+    color: white !important;
+    padding: 8px 24px;         /* 更宽的内边距，形成胶囊形状 */
+    border-radius: 50px;       /* 完全圆形/胶囊状 */
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(106, 130, 251, 0.3); /* 柔和的投影 */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-single .post-tags a:hover {
+    transform: translateY(-3px); /* 鼠标悬停上浮 */
+    box-shadow: 0 8px 20px rgba(106, 130, 251, 0.4);
 }
