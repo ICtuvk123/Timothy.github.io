@@ -29,6 +29,15 @@ theme = "PaperMod"
     description = "AI, Math, and CS Notes"
     author = "Timothy"
 
+[languages]
+    [languages.en]
+        languageName = "English"
+        weight = 1
+
+    [languages.zh]
+        languageName = "中文"
+        weight = 2
+
     # 功能开关
     ShowToc = true
     TocOpen = false

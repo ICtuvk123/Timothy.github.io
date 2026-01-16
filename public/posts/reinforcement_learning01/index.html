@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Introduction to Reinforcement Learning | Timothy&#39;s Blog</title>
+<meta name="keywords" content="reinforcement learning, AI, machine learning">
+<meta name="description" content="Introduction
+Reinforcement Learning (RL) is a type of machine learning where an agent learns to make decisions by taking actions in an environment to maximize some notion of cumulative reward. Unlike supervised learning, where the model learns from a labeled dataset, RL relies on feedback from the environment in the form of rewards or penalties.
+Policy and Action
+The agent maintains an internal state $z_t$, which it passes to its policy $\pi$ to choose an action $a_t = \pi(z_t).$">
+<meta name="author" content="Timothy">
+<link rel="canonical" href="http://localhost:1313/posts/reinforcement_learning01/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2dd7dd100f06b24f3d68c8d71d9065e5e0088bb70c9dac5b8f73c34ee1661edb.css" integrity="sha256-LdfdEA8Gsk89aMjXHZBl5eAIi7cMnaxbj3PDTuFmHts=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/reinforcement_learning01/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+        ],
+        ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        throwOnError: false
+    });"></script>
+<meta property="og:url" content="http://localhost:1313/posts/reinforcement_learning01/">
+  <meta property="og:site_name" content="Timothy&#39;s Blog">
+  <meta property="og:title" content="Introduction to Reinforcement Learning">
+  <meta property="og:description" content="Introduction Reinforcement Learning (RL) is a type of machine learning where an agent learns to make decisions by taking actions in an environment to maximize some notion of cumulative reward. Unlike supervised learning, where the model learns from a labeled dataset, RL relies on feedback from the environment in the form of rewards or penalties.
+Policy and Action The agent maintains an internal state $z_t$, which it passes to its policy $\pi$ to choose an action $a_t = \pi(z_t).$">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-01-16T10:00:00+08:00">
+    <meta property="article:modified_time" content="2026-01-16T10:00:00+08:00">
+    <meta property="article:tag" content="Reinforcement Learning">
+    <meta property="article:tag" content="AI">
+    <meta property="article:tag" content="Machine Learning">
+    <meta property="og:image" content="http://localhost:1313/picture/reinforcement_learning01.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:1313/picture/reinforcement_learning01.png">
+<meta name="twitter:title" content="Introduction to Reinforcement Learning">
+<meta name="twitter:description" content="Introduction
+Reinforcement Learning (RL) is a type of machine learning where an agent learns to make decisions by taking actions in an environment to maximize some notion of cumulative reward. Unlike supervised learning, where the model learns from a labeled dataset, RL relies on feedback from the environment in the form of rewards or penalties.
+Policy and Action
+The agent maintains an internal state $z_t$, which it passes to its policy $\pi$ to choose an action $a_t = \pi(z_t).$">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Introduction to Reinforcement Learning",
+      "item": "http://localhost:1313/posts/reinforcement_learning01/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Introduction to Reinforcement Learning",
+  "name": "Introduction to Reinforcement Learning",
+  "description": "Introduction Reinforcement Learning (RL) is a type of machine learning where an agent learns to make decisions by taking actions in an environment to maximize some notion of cumulative reward. Unlike supervised learning, where the model learns from a labeled dataset, RL relies on feedback from the environment in the form of rewards or penalties.\nPolicy and Action The agent maintains an internal state $z_t$, which it passes to its policy $\\pi$ to choose an action $a_t = \\pi(z_t).$\n",
+  "keywords": [
+    "reinforcement learning", "AI", "machine learning"
+  ],
+  "articleBody": "Introduction Reinforcement Learning (RL) is a type of machine learning where an agent learns to make decisions by taking actions in an environment to maximize some notion of cumulative reward. Unlike supervised learning, where the model learns from a labeled dataset, RL relies on feedback from the environment in the form of rewards or penalties.\nPolicy and Action The agent maintains an internal state $z_t$, which it passes to its policy $\\pi$ to choose an action $a_t = \\pi(z_t).$\nGoal The goal of the agent is to choose a policy π so as to maximize the sum of expected rewards:\n$$\r\\begin{aligned}\rV^\\pi(s_0) = \\mathbb{E}_{a_0, s_1, a_1, \\dots, a_T, s_T \\sim p(\\cdot \\mid s_0, \\pi)} \\left[ \\sum_{t=0}^T R(s_t, a_t) \\right]\r\\end{aligned}\r$$\rwhere $s_0$ is the initial state, $p(\\cdot|s_0, \\pi)$ is the distribution over trajectories induced by the policy π starting from state $s_0$, and $R(s_t, a_t)$ is the reward received after taking action $a_t$ in state $s_t$. and the expectation is wrt:\n$$\r\\begin{aligned}\rp(a_0, s_1, a_1, \\dots, a_T, s_T \\mid s_0, \\pi) \u0026= \\pi(a_0 \\mid s_0) p_{env}(o_1 \\mid a_0) \\vartheta(s_1 = U(s_0, a_0, o_1)) \\\\\r\u0026= \\prod_{t=1}^T \\pi(a_t \\mid s_t) p_{env}(o_{t+1} \\mid a_t) \\vartheta(s_{t+1} = U(s_t, a_t, o_{t+1}))\r\\end{aligned}\r$$\rwhere $p_{env}(o_{t+1} \\mid a_t)$ is the environment’s observation model, and $U(s_t, a_t, o_{t+1})$ is the state update function based on the current state, action taken, and observation received.\nEpisodic vs continual tasks If the agent can potentially interact with the environment forever, we call it a continual task. Alternatively, we say the agent is in an episodic task if its interaction terminates once the system enters a terminal state or absorbing state.\nWe define the return for a state at time t to be the sum of expected rewards obtained going forwards, where each reward is multiplied by a discount factor $\\gamma$:\n$$\r\\begin{aligned}\rG_t \u0026= R_{t+1} + \\gamma R_{t+2} + \\gamma^2 R_{t+3} + \\dots \\\\\r\u0026= \\sum_{k=0}^\\infty \\gamma^k R_{t+k+1} \\\\\r\u0026= R_{t} + \\gamma G_{t+1}\r\\end{aligned}\r$$\rOverview of the architecture The agent and environment interact at each time step t as follows:\nThe agent has a internal state $z_t$ that summarizes its history of interaction with the environment up to time t. The agent selects an action $a_t$ based on its policy $\\pi(z_t)$, which means that $a_t \\sim \\pi(z_t)$. Then it predicts the next state $z_{t+1|t}$ via the predict function P: $z_{t+1|t} = P(z_t, a_t)$ and optionally predicts the resulting observation $\\hat{o}{t+1|t} = O(z{t+1|t})$. The environment has hidden state $w_t$, which is not directly observable by the agent. The environment transitions to a new state $w_{t+1}$ according to its dynamics: $w_{t+1} \\sim M(w_t, a_t)$. The environment generates an observation $o_{t+1} \\sim O(w_{t+1})$ which is sent back to the agent. ",
+  "wordCount" : "453",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/picture/reinforcement_learning01.png","datePublished": "2026-01-16T10:00:00+08:00",
+  "dateModified": "2026-01-16T10:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Timothy"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/reinforcement_learning01/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Timothy's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Timothy&#39;s Blog (Alt + H)">Timothy&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                    <ul class="lang-switch"><li>|</li>
+                        <li>
+                            <a href="http://localhost:1313/zh/" title="中文"
+                                aria-label="中文">Zh</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Introduction to Reinforcement Learning
+    </h1>
+    <div class="post-meta"><span title='2026-01-16 10:00:00 +0800 CST'>January 16, 2026</span>&nbsp;·&nbsp;<span>Timothy</span>
+
+</div>
+  </header> 
+<figure class="entry-cover">
+        <img loading="eager" src="http://localhost:1313/picture/reinforcement_learning01.png" alt="Reinforcement Learning Diagram">
+        <figcaption>An overview of reinforcement learning concepts</figcaption>
+</figure>
+  <div class="post-content"><h2 id="introduction">Introduction<a hidden class="anchor" aria-hidden="true" href="#introduction">#</a></h2>
+<p>Reinforcement Learning (RL) is a type of machine learning where an agent learns to make decisions by taking actions in an environment to maximize some notion of cumulative reward. Unlike supervised learning, where the model learns from a labeled dataset, RL relies on feedback from the environment in the form of rewards or penalties.</p>
+<h2 id="policy-and-action">Policy and Action<a hidden class="anchor" aria-hidden="true" href="#policy-and-action">#</a></h2>
+<p>The agent maintains an internal state $z_t$, which it passes to its policy $\pi$ to choose an action $a_t = \pi(z_t).$</p>
+<h2 id="goal">Goal<a hidden class="anchor" aria-hidden="true" href="#goal">#</a></h2>
+<p>The goal of the agent is to choose a policy π so as to maximize the sum of expected rewards:</p>
+<div>
+$$
+\begin{aligned}
+V^\pi(s_0) = \mathbb{E}_{a_0, s_1, a_1, \dots, a_T, s_T \sim p(\cdot \mid s_0, \pi)} \left[ \sum_{t=0}^T R(s_t, a_t) \right]
+\end{aligned}
+$$
+</div>
+<p>where $s_0$ is the initial state, $p(\cdot|s_0, \pi)$ is the distribution over trajectories induced by the policy π starting from state $s_0$, and $R(s_t, a_t)$ is the reward received after taking action $a_t$ in state $s_t$.
+and the expectation is wrt:</p>
+<div>
+$$
+\begin{aligned}
+p(a_0, s_1, a_1, \dots, a_T, s_T \mid s_0, \pi) 
+&= \pi(a_0 \mid s_0) p_{env}(o_1 \mid a_0) \vartheta(s_1 = U(s_0, a_0, o_1)) \\
+&= \prod_{t=1}^T \pi(a_t \mid s_t) p_{env}(o_{t+1} \mid a_t) \vartheta(s_{t+1} = U(s_t, a_t, o_{t+1}))
+\end{aligned}
+$$
+</div>
+<p>where $p_{env}(o_{t+1} \mid a_t)$ is the environment&rsquo;s observation model, and $U(s_t, a_t, o_{t+1})$ is the state update function based on the current state, action taken, and observation received.</p>
+<h2 id="episodic-vs-continual-tasks">Episodic vs continual tasks<a hidden class="anchor" aria-hidden="true" href="#episodic-vs-continual-tasks">#</a></h2>
+<p>If the agent can potentially interact with the environment forever, we call it a continual task.
+Alternatively, we say the agent is in an episodic task if its interaction terminates once the system enters a terminal state or absorbing state.</p>
+<p>We define the return for a state at time t to be the sum of expected rewards obtained going forwards,
+where each reward is multiplied by a discount factor $\gamma$:</p>
+<div>
+$$
+\begin{aligned}
+G_t &= R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \dots \\
+&= \sum_{k=0}^\infty \gamma^k R_{t+k+1} \\
+&= R_{t} + \gamma G_{t+1}
+\end{aligned}
+$$
+</div>
+<h2 id="overview-of-the-architecture">Overview of the architecture<a hidden class="anchor" aria-hidden="true" href="#overview-of-the-architecture">#</a></h2>
+<p><img alt="overview of the architecture" loading="lazy" src="/picture/agent_and_environment.png"></p>
+<p>The agent and environment interact at each time step t as follows:</p>
+<ol>
+<li>The agent has a internal state $z_t$ that summarizes its history of interaction with the environment up to time t.</li>
+<li>The agent selects an action $a_t$ based on its policy $\pi(z_t)$, which means that $a_t \sim \pi(z_t)$.</li>
+<li>Then it predicts the next state $z_{t+1|t}$ via the predict function P: $z_{t+1|t} = P(z_t, a_t)$ and optionally predicts the resulting observation $\hat{o}<em>{t+1|t} = O(z</em>{t+1|t})$.</li>
+<li>The environment has hidden state $w_t$, which is not directly observable by the agent.</li>
+<li>The environment transitions to a new state $w_{t+1}$ according to its dynamics: $w_{t+1} \sim M(w_t, a_t)$.</li>
+<li>The environment generates an observation $o_{t+1} \sim O(w_{t+1})$ which is sent back to the agent.</li>
+<li></li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/reinforcement-learning/">Reinforcement Learning</a></li>
+      <li><a href="http://localhost:1313/tags/ai/">AI</a></li>
+      <li><a href="http://localhost:1313/tags/machine-learning/">Machine Learning</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">Timothy&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

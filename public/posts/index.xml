@@ -5,9 +5,26 @@
     <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on Timothy&#39;s Blog</description>
     <generator>Hugo -- 0.154.5</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 15 Jan 2026 15:08:59 +0800</lastBuildDate>
+    <language>en</language>
+    <lastBuildDate>Fri, 16 Jan 2026 10:00:00 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Introduction to Reinforcement Learning</title>
+      <link>http://localhost:1313/posts/reinforcement_learning01/</link>
+      <pubDate>Fri, 16 Jan 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/posts/reinforcement_learning01/</guid>
+      <description>&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;
+&lt;p&gt;Reinforcement Learning (RL) is a type of machine learning where an agent learns to make decisions by taking actions in an environment to maximize some notion of cumulative reward. Unlike supervised learning, where the model learns from a labeled dataset, RL relies on feedback from the environment in the form of rewards or penalties.&lt;/p&gt;
+&lt;h2 id=&#34;policy-and-action&#34;&gt;Policy and Action&lt;/h2&gt;
+&lt;p&gt;The agent maintains an internal state $z_t$, which it passes to its policy $\pi$ to choose an action $a_t = \pi(z_t).$&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Population Method</title>
+      <link>http://localhost:1313/posts/population_method/</link>
+      <pubDate>Fri, 16 Jan 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/posts/population_method/</guid>
+      <description>An in-depth look at the Population Method</description>
+    </item>
     <item>
       <title>First Post</title>
       <link>http://localhost:1313/posts/first-post/</link>
@@ -16,11 +33,7 @@
       <description>&lt;p&gt;Welcome to my first blog post! This is where I will share my thoughts, experiences, and updates. Stay tuned for more content!&lt;/p&gt;
 &lt;hr&gt;
 &lt;p&gt;Feel free to leave comments and share your feedback. Looking forward to connecting with you all!&lt;/p&gt;
-&lt;p&gt;$$E = mc^2$$
-$$\int_a^b f(x) , dx$$
-$$\frac{d}{dx}e^x = e^x$$
-$$\sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}$$
-$$\lim_{x \to 0} \frac{\sin x}{x} = 1$$&lt;/p&gt;</description>
+&lt;p&gt;Happy blogging!&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
