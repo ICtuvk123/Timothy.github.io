@@ -6,6 +6,81 @@
     <description>Recent content on Timothy&#39;s Blog</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>zh</language>
+    <lastBuildDate>Sat, 17 Jan 2026 02:53:59 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/zh/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>几何深度学习简介</title>
+      <link>http://localhost:1313/zh/posts/geometric_deeplearning/</link>
+      <pubDate>Sat, 17 Jan 2026 02:53:59 +0800</pubDate>
+      <guid>http://localhost:1313/zh/posts/geometric_deeplearning/</guid>
+      <description>&lt;h2 id=&#34;几何深度学习的演变&#34;&gt;几何深度学习的演变&lt;/h2&gt;
+&lt;p&gt;几千年来，几何学一直是人类知识的基本组成部分。古希腊人通过欧几里得的《几何原本》将几何学研究形式化。欧几里得的垄断地位在十九世纪结束了，罗巴切夫斯基、波尔约、高斯和黎曼等人分别构建了非欧几里得几何。&lt;/p&gt;
+&lt;p&gt;到了那个世纪末，这些研究已经分化成不同的领域，数学家和哲学家们争论这些几何的有效性和相互关系，以及“唯一真实几何”的本质。&lt;/p&gt;
+&lt;p&gt;年轻的数学家菲利克斯·克莱因指出了摆脱这种困境的出路。克莱因提议将几何学作为不变量的研究，即在某类变换（称为几何的对称性）下保持不变的性质。这种方法通过表明当时已知的各种几何可以通过选择适当的对称变换来定义（使用群论语言形式化），从而创造了清晰度。&lt;/p&gt;
+&lt;h2 id=&#34;深度学习简介&#34;&gt;深度学习简介&lt;/h2&gt;
+&lt;p&gt;深度学习的本质建立在两个简单的算法原则之上：第一，表示或特征学习的概念，即适应性的、通常是分层的特征捕捉每个任务的适当规律性概念；第二，通过局部梯度下降进行学习，通常实现为反向传播。&lt;/p&gt;
+&lt;h2 id=&#34;几何深度学习的目标&#34;&gt;几何深度学习的目标&lt;/h2&gt;
+&lt;p&gt;虽然在高维空间学习通用函数是一个棘手的估计问题，但大多数任务并不是通用的，且带有源于物理世界底层低维性和结构的基本预定义规律。&lt;/p&gt;
+&lt;p&gt;这种“几何统一”的努力具有双重目的：一方面，它提供了一个通用的数学框架来研究最成功的神经网络架构，如 CNN、RNN、GNN 和 Transformer。另一方面，它提供了一个建设性的程序，将先验物理知识融入神经架构，并为构建尚未发明的未来架构提供了原则性的方法。&lt;/p&gt;
+&lt;h2 id=&#34;高维学习&#34;&gt;高维学习&lt;/h2&gt;
+&lt;p&gt;监督机器学习，在其最简单的形式化中，考虑一组 N 个观测值 $D = {(x_i, y_i)}_{i=1}^N$，这些观测值是从定义在 $\mathcal{X} \times \mathcal{Y}$ 上的底层数据分布 P 中独立同分布 (i.i.d.) 抽取的。&lt;/p&gt;
+&lt;p&gt;让我们进一步假设标签 y 是由未知函数 f 生成的，使得 $y_i = f(x_i)$，并且学习问题简化为使用参数化函数类 $F = {f_\theta \in \Theta}$ 来估计函数 f。&lt;/p&gt;
+&lt;p&gt;现代深度学习系统通常在所谓的插值机制中运行，其中估计的 $\widetilde{f}$ $\in F$ 满足 $\widetilde{f}(x_i) = f(x_i)$ 对于所有 $i = 1, . . . , N$。&lt;/p&gt;
+&lt;p&gt;学习算法的性能是根据从 $P$ 中抽取的样本的预期性能来衡量的，使用损失函数$L(.,.)$：
+$$\mathcal{R} = \mathbb{E}_{(x,y) \sim P}[L(\widetilde{f}(x), f(x))]$$&lt;/p&gt;
+&lt;p&gt;这样构建出来的函数几乎可以逼近一切的函数(通用逼近定理)，但这并不意味着我们不需要用归纳偏置来约束学习问题。给定一个具有通用逼近能力的函数类$\mathcal{F}$,我们可以定义一个复杂度函数:
+$$c: \mathcal{F} \rightarrow \mathbb{R}$$,将我们的插值问题定义为：
+$$\widetilde{f} = \arg\min_{g \in \mathcal{F}} c(g) \quad s.t. \quad \widetilde{f}(x_i) = f(x_i), \quad i = 1, . . . , N$$&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>强化学习简介</title>
+      <link>http://localhost:1313/zh/posts/reinforcement_learning01/</link>
+      <pubDate>Fri, 16 Jan 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/posts/reinforcement_learning01/</guid>
+      <description>&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
+&lt;p&gt;强化学习 (RL) 是一种机器学习类型，其中智能体通过在环境中采取行动来学习做出决策，以最大化某种累积奖励的概念。与从标记数据集学习模型的监督学习不同，RL 依赖于来自环境的奖励或惩罚形式的反馈。&lt;/p&gt;
+&lt;h2 id=&#34;策略与行动&#34;&gt;策略与行动&lt;/h2&gt;
+&lt;p&gt;智能体维护一个内部状态 $z_t$，并将其传递给策略 $\pi$ 以选择行动 $a_t = \pi(z_t)$。&lt;/p&gt;
+&lt;h2 id=&#34;目标&#34;&gt;目标&lt;/h2&gt;
+&lt;p&gt;智能体的目标是选择一个策略 π，以最大化预期奖励的总和：&lt;/p&gt;
+&lt;div&gt;
+$$
+\begin{aligned}
+V^\pi(s_0) = \mathbb{E}_{a_0, s_1, a_1, \dots, a_T, s_T \sim p(\cdot \mid s_0, \pi)} \left[ \sum_{t=0}^T R(s_t, a_t) \right]
+\end{aligned}
+$$
+&lt;/div&gt;
+&lt;p&gt;其中 $s_0$ 是初始状态，$p(\cdot|s_0, \pi)$ 是策略 π 从状态 $s_0$ 开始诱导的轨迹分布，$R(s_t, a_t)$ 是在状态 $s_t$ 采取行动 $a_t$ 后收到的奖励。
+期望是关于：&lt;/p&gt;
+&lt;div&gt;
+$$
+\begin{aligned}
+p(a_0, s_1, a_1, \dots, a_T, s_T \mid s_0, \pi) 
+&amp;= \pi(a_0 \mid s_0) p_{env}(o_1 \mid a_0) \vartheta(s_1 = U(s_0, a_0, o_1)) \\
+&amp;= \prod_{t=1}^T \pi(a_t \mid s_t) p_{env}(o_{t+1} \mid a_t) \vartheta(s_{t+1} = U(s_t, a_t, o_{t+1}))
+\end{aligned}
+$$
+&lt;/div&gt;
+&lt;p&gt;其中 $p_{env}(o_{t+1} \mid a_t)$ 是环境的观测模型，$U(s_t, a_t, o_{t+1})$ 是基于当前状态、采取的行动和收到的观测的状态更新函数。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>种群方法</title>
+      <link>http://localhost:1313/zh/posts/population_method/</link>
+      <pubDate>Fri, 16 Jan 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/posts/population_method/</guid>
+      <description>深入探讨种群方法</description>
+    </item>
+    <item>
+      <title>第一篇文章</title>
+      <link>http://localhost:1313/zh/posts/first-post/</link>
+      <pubDate>Thu, 15 Jan 2026 15:08:59 +0800</pubDate>
+      <guid>http://localhost:1313/zh/posts/first-post/</guid>
+      <description>&lt;p&gt;欢迎来到我的第一篇博客文章！在这里我将分享我的想法、经历和更新。敬请期待更多内容！&lt;/p&gt;
+&lt;h2 id=&#34;关于语言&#34;&gt;关于语言&lt;/h2&gt;
+&lt;p&gt;我将主要用中文撰写文章，以触达更广泛的受众。不过，为了清晰起见，我可能会在必要时包含英文术语和短语。当然，未来也可能会提供部分文章的英文版本。&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;欢迎留言并分享您的反馈。期待与大家交流！&lt;/p&gt;
+&lt;p&gt;写作愉快！&lt;/p&gt;</description>
+    </item>
   </channel>
 </rss>

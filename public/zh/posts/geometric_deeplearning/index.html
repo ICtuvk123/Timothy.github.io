@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>几何深度学习简介 | Timothy&#39;s Blog</title>
+<meta name="keywords" content="geometric deep learning, machine learning">
+<meta name="description" content="几何深度学习的演变
+几千年来，几何学一直是人类知识的基本组成部分。古希腊人通过欧几里得的《几何原本》将几何学研究形式化。欧几里得的垄断地位在十九世纪结束了，罗巴切夫斯基、波尔约、高斯和黎曼等人分别构建了非欧几里得几何。
+到了那个世纪末，这些研究已经分化成不同的领域，数学家和哲学家们争论这些几何的有效性和相互关系，以及“唯一真实几何”的本质。
+年轻的数学家菲利克斯·克莱因指出了摆脱这种困境的出路。克莱因提议将几何学作为不变量的研究，即在某类变换（称为几何的对称性）下保持不变的性质。这种方法通过表明当时已知的各种几何可以通过选择适当的对称变换来定义（使用群论语言形式化），从而创造了清晰度。
+深度学习简介
+深度学习的本质建立在两个简单的算法原则之上：第一，表示或特征学习的概念，即适应性的、通常是分层的特征捕捉每个任务的适当规律性概念；第二，通过局部梯度下降进行学习，通常实现为反向传播。
+几何深度学习的目标
+虽然在高维空间学习通用函数是一个棘手的估计问题，但大多数任务并不是通用的，且带有源于物理世界底层低维性和结构的基本预定义规律。
+这种“几何统一”的努力具有双重目的：一方面，它提供了一个通用的数学框架来研究最成功的神经网络架构，如 CNN、RNN、GNN 和 Transformer。另一方面，它提供了一个建设性的程序，将先验物理知识融入神经架构，并为构建尚未发明的未来架构提供了原则性的方法。
+高维学习
+监督机器学习，在其最简单的形式化中，考虑一组 N 个观测值 $D = {(x_i, y_i)}_{i=1}^N$，这些观测值是从定义在 $\mathcal{X} \times \mathcal{Y}$ 上的底层数据分布 P 中独立同分布 (i.i.d.) 抽取的。
+让我们进一步假设标签 y 是由未知函数 f 生成的，使得 $y_i = f(x_i)$，并且学习问题简化为使用参数化函数类 $F = {f_\theta \in \Theta}$ 来估计函数 f。
+现代深度学习系统通常在所谓的插值机制中运行，其中估计的 $\widetilde{f}$ $\in F$ 满足 $\widetilde{f}(x_i) = f(x_i)$ 对于所有 $i = 1, . . . , N$。
+学习算法的性能是根据从 $P$ 中抽取的样本的预期性能来衡量的，使用损失函数$L(.,.)$：
+$$\mathcal{R} = \mathbb{E}_{(x,y) \sim P}[L(\widetilde{f}(x), f(x))]$$
+这样构建出来的函数几乎可以逼近一切的函数(通用逼近定理)，但这并不意味着我们不需要用归纳偏置来约束学习问题。给定一个具有通用逼近能力的函数类$\mathcal{F}$,我们可以定义一个复杂度函数:
+$$c: \mathcal{F} \rightarrow \mathbb{R}$$,将我们的插值问题定义为：
+$$\widetilde{f} = \arg\min_{g \in \mathcal{F}} c(g) \quad s.t. \quad \widetilde{f}(x_i) = f(x_i), \quad i = 1, . . . , N$$">
+<meta name="author" content="Timothy">
+<link rel="canonical" href="http://localhost:1313/zh/posts/geometric_deeplearning/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2dd7dd100f06b24f3d68c8d71d9065e5e0088bb70c9dac5b8f73c34ee1661edb.css" integrity="sha256-LdfdEA8Gsk89aMjXHZBl5eAIi7cMnaxbj3PDTuFmHts=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/geometric_deeplearning/">
+<link rel="alternate" hreflang="zh" href="http://localhost:1313/zh/posts/geometric_deeplearning/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+        ],
+        ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        throwOnError: false
+    });"></script>
+<meta property="og:url" content="http://localhost:1313/zh/posts/geometric_deeplearning/">
+  <meta property="og:site_name" content="Timothy&#39;s Blog">
+  <meta property="og:title" content="几何深度学习简介">
+  <meta property="og:description" content="几何深度学习的演变 几千年来，几何学一直是人类知识的基本组成部分。古希腊人通过欧几里得的《几何原本》将几何学研究形式化。欧几里得的垄断地位在十九世纪结束了，罗巴切夫斯基、波尔约、高斯和黎曼等人分别构建了非欧几里得几何。
+到了那个世纪末，这些研究已经分化成不同的领域，数学家和哲学家们争论这些几何的有效性和相互关系，以及“唯一真实几何”的本质。
+年轻的数学家菲利克斯·克莱因指出了摆脱这种困境的出路。克莱因提议将几何学作为不变量的研究，即在某类变换（称为几何的对称性）下保持不变的性质。这种方法通过表明当时已知的各种几何可以通过选择适当的对称变换来定义（使用群论语言形式化），从而创造了清晰度。
+深度学习简介 深度学习的本质建立在两个简单的算法原则之上：第一，表示或特征学习的概念，即适应性的、通常是分层的特征捕捉每个任务的适当规律性概念；第二，通过局部梯度下降进行学习，通常实现为反向传播。
+几何深度学习的目标 虽然在高维空间学习通用函数是一个棘手的估计问题，但大多数任务并不是通用的，且带有源于物理世界底层低维性和结构的基本预定义规律。
+这种“几何统一”的努力具有双重目的：一方面，它提供了一个通用的数学框架来研究最成功的神经网络架构，如 CNN、RNN、GNN 和 Transformer。另一方面，它提供了一个建设性的程序，将先验物理知识融入神经架构，并为构建尚未发明的未来架构提供了原则性的方法。
+高维学习 监督机器学习，在其最简单的形式化中，考虑一组 N 个观测值 $D = {(x_i, y_i)}_{i=1}^N$，这些观测值是从定义在 $\mathcal{X} \times \mathcal{Y}$ 上的底层数据分布 P 中独立同分布 (i.i.d.) 抽取的。
+让我们进一步假设标签 y 是由未知函数 f 生成的，使得 $y_i = f(x_i)$，并且学习问题简化为使用参数化函数类 $F = {f_\theta \in \Theta}$ 来估计函数 f。
+现代深度学习系统通常在所谓的插值机制中运行，其中估计的 $\widetilde{f}$ $\in F$ 满足 $\widetilde{f}(x_i) = f(x_i)$ 对于所有 $i = 1, . . . , N$。
+学习算法的性能是根据从 $P$ 中抽取的样本的预期性能来衡量的，使用损失函数$L(.,.)$： $$\mathcal{R} = \mathbb{E}_{(x,y) \sim P}[L(\widetilde{f}(x), f(x))]$$
+这样构建出来的函数几乎可以逼近一切的函数(通用逼近定理)，但这并不意味着我们不需要用归纳偏置来约束学习问题。给定一个具有通用逼近能力的函数类$\mathcal{F}$,我们可以定义一个复杂度函数: $$c: \mathcal{F} \rightarrow \mathbb{R}$$,将我们的插值问题定义为： $$\widetilde{f} = \arg\min_{g \in \mathcal{F}} c(g) \quad s.t. \quad \widetilde{f}(x_i) = f(x_i), \quad i = 1, . . . , N$$">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-01-17T02:53:59+08:00">
+    <meta property="article:modified_time" content="2026-01-17T02:53:59+08:00">
+    <meta property="article:tag" content="Geometric Deep Learning">
+    <meta property="article:tag" content="Machine Learning">
+    <meta property="og:image" content="http://localhost:1313/geometric_deeplearning/geocover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:1313/geometric_deeplearning/geocover.png">
+<meta name="twitter:title" content="几何深度学习简介">
+<meta name="twitter:description" content="几何深度学习的演变
+几千年来，几何学一直是人类知识的基本组成部分。古希腊人通过欧几里得的《几何原本》将几何学研究形式化。欧几里得的垄断地位在十九世纪结束了，罗巴切夫斯基、波尔约、高斯和黎曼等人分别构建了非欧几里得几何。
+到了那个世纪末，这些研究已经分化成不同的领域，数学家和哲学家们争论这些几何的有效性和相互关系，以及“唯一真实几何”的本质。
+年轻的数学家菲利克斯·克莱因指出了摆脱这种困境的出路。克莱因提议将几何学作为不变量的研究，即在某类变换（称为几何的对称性）下保持不变的性质。这种方法通过表明当时已知的各种几何可以通过选择适当的对称变换来定义（使用群论语言形式化），从而创造了清晰度。
+深度学习简介
+深度学习的本质建立在两个简单的算法原则之上：第一，表示或特征学习的概念，即适应性的、通常是分层的特征捕捉每个任务的适当规律性概念；第二，通过局部梯度下降进行学习，通常实现为反向传播。
+几何深度学习的目标
+虽然在高维空间学习通用函数是一个棘手的估计问题，但大多数任务并不是通用的，且带有源于物理世界底层低维性和结构的基本预定义规律。
+这种“几何统一”的努力具有双重目的：一方面，它提供了一个通用的数学框架来研究最成功的神经网络架构，如 CNN、RNN、GNN 和 Transformer。另一方面，它提供了一个建设性的程序，将先验物理知识融入神经架构，并为构建尚未发明的未来架构提供了原则性的方法。
+高维学习
+监督机器学习，在其最简单的形式化中，考虑一组 N 个观测值 $D = {(x_i, y_i)}_{i=1}^N$，这些观测值是从定义在 $\mathcal{X} \times \mathcal{Y}$ 上的底层数据分布 P 中独立同分布 (i.i.d.) 抽取的。
+让我们进一步假设标签 y 是由未知函数 f 生成的，使得 $y_i = f(x_i)$，并且学习问题简化为使用参数化函数类 $F = {f_\theta \in \Theta}$ 来估计函数 f。
+现代深度学习系统通常在所谓的插值机制中运行，其中估计的 $\widetilde{f}$ $\in F$ 满足 $\widetilde{f}(x_i) = f(x_i)$ 对于所有 $i = 1, . . . , N$。
+学习算法的性能是根据从 $P$ 中抽取的样本的预期性能来衡量的，使用损失函数$L(.,.)$：
+$$\mathcal{R} = \mathbb{E}_{(x,y) \sim P}[L(\widetilde{f}(x), f(x))]$$
+这样构建出来的函数几乎可以逼近一切的函数(通用逼近定理)，但这并不意味着我们不需要用归纳偏置来约束学习问题。给定一个具有通用逼近能力的函数类$\mathcal{F}$,我们可以定义一个复杂度函数:
+$$c: \mathcal{F} \rightarrow \mathbb{R}$$,将我们的插值问题定义为：
+$$\widetilde{f} = \arg\min_{g \in \mathcal{F}} c(g) \quad s.t. \quad \widetilde{f}(x_i) = f(x_i), \quad i = 1, . . . , N$$">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/zh/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "几何深度学习简介",
+      "item": "http://localhost:1313/zh/posts/geometric_deeplearning/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "几何深度学习简介",
+  "name": "几何深度学习简介",
+  "description": "几何深度学习的演变 几千年来，几何学一直是人类知识的基本组成部分。古希腊人通过欧几里得的《几何原本》将几何学研究形式化。欧几里得的垄断地位在十九世纪结束了，罗巴切夫斯基、波尔约、高斯和黎曼等人分别构建了非欧几里得几何。\n到了那个世纪末，这些研究已经分化成不同的领域，数学家和哲学家们争论这些几何的有效性和相互关系，以及“唯一真实几何”的本质。\n年轻的数学家菲利克斯·克莱因指出了摆脱这种困境的出路。克莱因提议将几何学作为不变量的研究，即在某类变换（称为几何的对称性）下保持不变的性质。这种方法通过表明当时已知的各种几何可以通过选择适当的对称变换来定义（使用群论语言形式化），从而创造了清晰度。\n深度学习简介 深度学习的本质建立在两个简单的算法原则之上：第一，表示或特征学习的概念，即适应性的、通常是分层的特征捕捉每个任务的适当规律性概念；第二，通过局部梯度下降进行学习，通常实现为反向传播。\n几何深度学习的目标 虽然在高维空间学习通用函数是一个棘手的估计问题，但大多数任务并不是通用的，且带有源于物理世界底层低维性和结构的基本预定义规律。\n这种“几何统一”的努力具有双重目的：一方面，它提供了一个通用的数学框架来研究最成功的神经网络架构，如 CNN、RNN、GNN 和 Transformer。另一方面，它提供了一个建设性的程序，将先验物理知识融入神经架构，并为构建尚未发明的未来架构提供了原则性的方法。\n高维学习 监督机器学习，在其最简单的形式化中，考虑一组 N 个观测值 $D = {(x_i, y_i)}_{i=1}^N$，这些观测值是从定义在 $\\mathcal{X} \\times \\mathcal{Y}$ 上的底层数据分布 P 中独立同分布 (i.i.d.) 抽取的。\n让我们进一步假设标签 y 是由未知函数 f 生成的，使得 $y_i = f(x_i)$，并且学习问题简化为使用参数化函数类 $F = {f_\\theta \\in \\Theta}$ 来估计函数 f。\n现代深度学习系统通常在所谓的插值机制中运行，其中估计的 $\\widetilde{f}$ $\\in F$ 满足 $\\widetilde{f}(x_i) = f(x_i)$ 对于所有 $i = 1, . . . , N$。\n学习算法的性能是根据从 $P$ 中抽取的样本的预期性能来衡量的，使用损失函数$L(.,.)$： $$\\mathcal{R} = \\mathbb{E}_{(x,y) \\sim P}[L(\\widetilde{f}(x), f(x))]$$\n这样构建出来的函数几乎可以逼近一切的函数(通用逼近定理)，但这并不意味着我们不需要用归纳偏置来约束学习问题。给定一个具有通用逼近能力的函数类$\\mathcal{F}$,我们可以定义一个复杂度函数: $$c: \\mathcal{F} \\rightarrow \\mathbb{R}$$,将我们的插值问题定义为： $$\\widetilde{f} = \\arg\\min_{g \\in \\mathcal{F}} c(g) \\quad s.t. \\quad \\widetilde{f}(x_i) = f(x_i), \\quad i = 1, . . . , N$$\n",
+  "keywords": [
+    "geometric deep learning", "machine learning"
+  ],
+  "articleBody": "几何深度学习的演变 几千年来，几何学一直是人类知识的基本组成部分。古希腊人通过欧几里得的《几何原本》将几何学研究形式化。欧几里得的垄断地位在十九世纪结束了，罗巴切夫斯基、波尔约、高斯和黎曼等人分别构建了非欧几里得几何。\n到了那个世纪末，这些研究已经分化成不同的领域，数学家和哲学家们争论这些几何的有效性和相互关系，以及“唯一真实几何”的本质。\n年轻的数学家菲利克斯·克莱因指出了摆脱这种困境的出路。克莱因提议将几何学作为不变量的研究，即在某类变换（称为几何的对称性）下保持不变的性质。这种方法通过表明当时已知的各种几何可以通过选择适当的对称变换来定义（使用群论语言形式化），从而创造了清晰度。\n深度学习简介 深度学习的本质建立在两个简单的算法原则之上：第一，表示或特征学习的概念，即适应性的、通常是分层的特征捕捉每个任务的适当规律性概念；第二，通过局部梯度下降进行学习，通常实现为反向传播。\n几何深度学习的目标 虽然在高维空间学习通用函数是一个棘手的估计问题，但大多数任务并不是通用的，且带有源于物理世界底层低维性和结构的基本预定义规律。\n这种“几何统一”的努力具有双重目的：一方面，它提供了一个通用的数学框架来研究最成功的神经网络架构，如 CNN、RNN、GNN 和 Transformer。另一方面，它提供了一个建设性的程序，将先验物理知识融入神经架构，并为构建尚未发明的未来架构提供了原则性的方法。\n高维学习 监督机器学习，在其最简单的形式化中，考虑一组 N 个观测值 $D = {(x_i, y_i)}_{i=1}^N$，这些观测值是从定义在 $\\mathcal{X} \\times \\mathcal{Y}$ 上的底层数据分布 P 中独立同分布 (i.i.d.) 抽取的。\n让我们进一步假设标签 y 是由未知函数 f 生成的，使得 $y_i = f(x_i)$，并且学习问题简化为使用参数化函数类 $F = {f_\\theta \\in \\Theta}$ 来估计函数 f。\n现代深度学习系统通常在所谓的插值机制中运行，其中估计的 $\\widetilde{f}$ $\\in F$ 满足 $\\widetilde{f}(x_i) = f(x_i)$ 对于所有 $i = 1, . . . , N$。\n学习算法的性能是根据从 $P$ 中抽取的样本的预期性能来衡量的，使用损失函数$L(.,.)$： $$\\mathcal{R} = \\mathbb{E}_{(x,y) \\sim P}[L(\\widetilde{f}(x), f(x))]$$\n这样构建出来的函数几乎可以逼近一切的函数(通用逼近定理)，但这并不意味着我们不需要用归纳偏置来约束学习问题。给定一个具有通用逼近能力的函数类$\\mathcal{F}$,我们可以定义一个复杂度函数: $$c: \\mathcal{F} \\rightarrow \\mathbb{R}$$,将我们的插值问题定义为： $$\\widetilde{f} = \\arg\\min_{g \\in \\mathcal{F}} c(g) \\quad s.t. \\quad \\widetilde{f}(x_i) = f(x_i), \\quad i = 1, . . . , N$$\n所以，我们不仅希望函数拟合度好，同时也希望函数的复杂度低。这样的复杂度函数，我们把它称为函数的范数。 这样定义的好处是$\\mathcal{F}$变成了Banach空间(配备有范数的完备的向量空间)，我们可以使用泛函分析中的工具来研究它们的性质。\n几何先验 为了克服高维数据的“维度灾难”，我们必须利用数据的物理特性（对称性和尺度分离）；虽然数据的几何形状（Domain）可能很复杂，但在上面定义的信号（Signals）却构成了一个拥有良好数学性质的希尔伯特空间，让我们依然可以用线性代数和泛函分析的工具来处理它们。\n例如，在图像处理中，数据通常被表示为定义在二维欧几里得空间 $\\mathbb{R}^2$ 上的信号（像素值）。这种空间具有平移和旋转对称性，这意味着如果我们平移或旋转图像，其内容和结构保持不变。卷积神经网络（CNN）正是利用了这种平移对称性，通过共享权重来捕捉局部特征，从而提高了学习效率和泛化能力。\n对称性与不变性 在机器学习中，对称性指的是数据或任务在某些变换下保持不变的性质。这些变换可以是平移、旋转、缩放等。 例如，在图像分类任务中，如果我们对图像进行平移或旋转，图像的类别通常不会改变。这种不变性是我们希望模型能够捕捉和利用的。\n对称群 对称性可以通过群论来形式化。一个群是一个集合，配备有一个二元运算，满足封闭性、结合性、单位元和逆元等性质。\n对称操作构成一个群，称为对称群，证明如下：\n封闭性：如果 $g_1$ 和 $g_2$ 是对称操作，那么它们的组合 $g_1 \\circ g_2$ 也是一个对称操作，因为连续应用两个对称变换仍然保持数据的不变性。 结合性：如果 $g_1$ 和 $g_2$ 是对称操作，那么对于任何 $g_3$，都有 $(g_1 \\circ g_2) \\circ g_3 = g_1 \\circ (g_2 \\circ g_3)$，因为变换的顺序不会影响最终结果。 单位元：存在一个单位操作 $e$，使得对于任何对称操作 $g$，都有 $e \\circ g = g \\circ e = g$。这个单位操作对应于不进行任何变换。 逆元：对于每个对称操作 $g$，存在一个逆操作 $g^{-1}$，使得 $g \\circ g^{-1} = g^{-1} \\circ g = e$。这个逆操作对应于撤销变换。 注意：$g \\circ h$ 表示先应用变换 $g$，再应用变换 $h$。\n下面以等边三角行为例说明对称群的概念： 在这个例子中，等边三角形的对称群包含六个元素：三个旋转操作（0度、120度、240度）和三个反射操作（通过每个顶点的垂直线）。这些操作满足群的四个性质，因此构成一个群，称为 $D_3$，即三角形的二面体群。 数学上，我们可以把这种操作看做映射： $$g: \\mathcal{X} \\rightarrow \\mathcal{X}$$ 其中 $\\mathcal{X}$ 是数据空间。对于一个对称群 $G$中的每个元素 $g \\in G$，我们都有一个对应的映射 $g$。 例如，$D_3$同样可以表示为矩阵群： $$ D_3 = \\left\\{ \\begin{pmatrix} 1 \u0026 2 \u0026 3 \\\\ 1 \u0026 2 \u0026 3 \\end{pmatrix}, \\begin{pmatrix} 1 \u0026 2 \u0026 3 \\\\ 2 \u0026 3 \u0026 1 \\end{pmatrix}, \\begin{pmatrix} 1 \u0026 2 \u0026 3 \\\\ 3 \u0026 1 \u0026 2 \\end{pmatrix}, \\begin{pmatrix} 1 \u0026 2 \u0026 3 \\\\ 1 \u0026 3 \u0026 2 \\end{pmatrix}, \\begin{pmatrix} 1 \u0026 2 \u0026 3 \\\\ 2 \u0026 1 \u0026 3 \\end{pmatrix}, \\begin{pmatrix} 1 \u0026 2 \u0026 3 \\\\ 3 \u0026 2 \u0026 1 \\end{pmatrix} \\right\\} $$\n参考资料 Bronstein, M. M., Bruna, J., LeCun, Y., Szlam, A., \u0026 Vandergheynst, P. (2017). Geometric deep learning: going beyond Euclidean data. IEEE Signal Processing Magazine, 34(4), 18-42. Goodfellow, I., Bengio, Y., \u0026 Courville, A. (2016). Deep learning. MIT press. Cohen, T. S., \u0026 Welling, M. (2016). Group equivariant convolutional networks. In International conference on machine learning (pp. 2990-2999). PMLR. Kondor, R., \u0026 Trivedi, S. (2018). On the generalization of equivariance and convolution in neural networks to the action of compact groups. In International conference on machine learning (pp. 2747-2755). PMLR. Wood, T., \u0026 Shawe-Taylor, J. (1996). Representation theory and invariant neural networks. Neural computation, 8(5), 1003-1013. Mallat, S. (2016). Understanding deep convolutional networks. Philosophical Transactions of the Royal Society A: Mathematical, Physical and Engineering Sciences, 374(2065), 20150203. Lee, J. M. (2013). Introduction to smooth manifolds. Springer Science \u0026 Business Media. ",
+  "wordCount" : "405",
+  "inLanguage": "zh",
+  "image":"http://localhost:1313/geometric_deeplearning/geocover.png","datePublished": "2026-01-17T02:53:59+08:00",
+  "dateModified": "2026-01-17T02:53:59+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Timothy"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/zh/posts/geometric_deeplearning/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Timothy's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/zh/" accesskey="h" title="Timothy&#39;s Blog (Alt + H)">Timothy&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                    <ul class="lang-switch"><li>|</li>
+                        <li>
+                            <a href="http://localhost:1313/" title="English"
+                                aria-label="English">En</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/zh/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/zh/search/" title="Search">
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/zh/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      几何深度学习简介
+    </h1>
+    <div class="post-meta"><span title='2026-01-17 02:53:59 +0800 CST'>2026年1月17日</span>&nbsp;·&nbsp;<span>Timothy</span>&nbsp;|&nbsp;<span>语言:</span>
+<ul class="i18n_list">
+    <li>
+        <a href="http://localhost:1313/posts/geometric_deeplearning/">En</a>
+    </li>
+</ul>
+
+</div>
+  </header> 
+<figure class="entry-cover">
+        <img loading="eager" src="http://localhost:1313/geometric_deeplearning/geocover.png" alt="">
+        
+</figure>
+  <div class="post-content"><h2 id="几何深度学习的演变">几何深度学习的演变<a hidden class="anchor" aria-hidden="true" href="#几何深度学习的演变">#</a></h2>
+<p>几千年来，几何学一直是人类知识的基本组成部分。古希腊人通过欧几里得的《几何原本》将几何学研究形式化。欧几里得的垄断地位在十九世纪结束了，罗巴切夫斯基、波尔约、高斯和黎曼等人分别构建了非欧几里得几何。</p>
+<p>到了那个世纪末，这些研究已经分化成不同的领域，数学家和哲学家们争论这些几何的有效性和相互关系，以及“唯一真实几何”的本质。</p>
+<p>年轻的数学家菲利克斯·克莱因指出了摆脱这种困境的出路。克莱因提议将几何学作为不变量的研究，即在某类变换（称为几何的对称性）下保持不变的性质。这种方法通过表明当时已知的各种几何可以通过选择适当的对称变换来定义（使用群论语言形式化），从而创造了清晰度。</p>
+<h2 id="深度学习简介">深度学习简介<a hidden class="anchor" aria-hidden="true" href="#深度学习简介">#</a></h2>
+<p>深度学习的本质建立在两个简单的算法原则之上：第一，表示或特征学习的概念，即适应性的、通常是分层的特征捕捉每个任务的适当规律性概念；第二，通过局部梯度下降进行学习，通常实现为反向传播。</p>
+<h2 id="几何深度学习的目标">几何深度学习的目标<a hidden class="anchor" aria-hidden="true" href="#几何深度学习的目标">#</a></h2>
+<p>虽然在高维空间学习通用函数是一个棘手的估计问题，但大多数任务并不是通用的，且带有源于物理世界底层低维性和结构的基本预定义规律。</p>
+<p>这种“几何统一”的努力具有双重目的：一方面，它提供了一个通用的数学框架来研究最成功的神经网络架构，如 CNN、RNN、GNN 和 Transformer。另一方面，它提供了一个建设性的程序，将先验物理知识融入神经架构，并为构建尚未发明的未来架构提供了原则性的方法。</p>
+<h2 id="高维学习">高维学习<a hidden class="anchor" aria-hidden="true" href="#高维学习">#</a></h2>
+<p>监督机器学习，在其最简单的形式化中，考虑一组 N 个观测值 $D = {(x_i, y_i)}_{i=1}^N$，这些观测值是从定义在 $\mathcal{X} \times \mathcal{Y}$ 上的底层数据分布 P 中独立同分布 (i.i.d.) 抽取的。</p>
+<p>让我们进一步假设标签 y 是由未知函数 f 生成的，使得 $y_i = f(x_i)$，并且学习问题简化为使用参数化函数类 $F = {f_\theta \in \Theta}$ 来估计函数 f。</p>
+<p>现代深度学习系统通常在所谓的插值机制中运行，其中估计的 $\widetilde{f}$ $\in F$ 满足 $\widetilde{f}(x_i) = f(x_i)$ 对于所有 $i = 1, . . . , N$。</p>
+<p>学习算法的性能是根据从 $P$ 中抽取的样本的预期性能来衡量的，使用损失函数$L(.,.)$：
+$$\mathcal{R} = \mathbb{E}_{(x,y) \sim P}[L(\widetilde{f}(x), f(x))]$$</p>
+<p>这样构建出来的函数几乎可以逼近一切的函数(通用逼近定理)，但这并不意味着我们不需要用归纳偏置来约束学习问题。给定一个具有通用逼近能力的函数类$\mathcal{F}$,我们可以定义一个复杂度函数:
+$$c: \mathcal{F} \rightarrow \mathbb{R}$$,将我们的插值问题定义为：
+$$\widetilde{f} = \arg\min_{g \in \mathcal{F}} c(g) \quad s.t. \quad \widetilde{f}(x_i) = f(x_i), \quad i = 1, . . . , N$$</p>
+<p><img alt="通用逼近定理示意图" loading="lazy" src="/geometric_deeplearning/geometric01.png"></p>
+<p>所以，我们不仅希望函数拟合度好，同时也希望函数的复杂度低。这样的复杂度函数，我们把它称为函数的范数。
+这样定义的好处是$\mathcal{F}$变成了Banach空间(配备有范数的完备的向量空间)，我们可以使用泛函分析中的工具来研究它们的性质。</p>
+<h2 id="几何先验">几何先验<a hidden class="anchor" aria-hidden="true" href="#几何先验">#</a></h2>
+<p>为了克服高维数据的“维度灾难”，我们必须利用数据的物理特性（对称性和尺度分离）；虽然数据的几何形状（Domain）可能很复杂，但在上面定义的信号（Signals）却构成了一个拥有良好数学性质的希尔伯特空间，让我们依然可以用线性代数和泛函分析的工具来处理它们。</p>
+<p>例如，在图像处理中，数据通常被表示为定义在二维欧几里得空间 $\mathbb{R}^2$ 上的信号（像素值）。这种空间具有平移和旋转对称性，这意味着如果我们平移或旋转图像，其内容和结构保持不变。卷积神经网络（CNN）正是利用了这种平移对称性，通过共享权重来捕捉局部特征，从而提高了学习效率和泛化能力。</p>
+<h2 id="对称性与不变性">对称性与不变性<a hidden class="anchor" aria-hidden="true" href="#对称性与不变性">#</a></h2>
+<p>在机器学习中，对称性指的是数据或任务在某些变换下保持不变的性质。这些变换可以是平移、旋转、缩放等。
+例如，在图像分类任务中，如果我们对图像进行平移或旋转，图像的类别通常不会改变。这种不变性是我们希望模型能够捕捉和利用的。</p>
+<h3 id="对称群">对称群<a hidden class="anchor" aria-hidden="true" href="#对称群">#</a></h3>
+<p>对称性可以通过群论来形式化。一个群是一个集合，配备有一个二元运算，满足封闭性、结合性、单位元和逆元等性质。</p>
+<p>对称操作构成一个群，称为对称群，证明如下：</p>
+<ol>
+<li><strong>封闭性</strong>：如果 $g_1$ 和 $g_2$ 是对称操作，那么它们的组合 $g_1 \circ g_2$ 也是一个对称操作，因为连续应用两个对称变换仍然保持数据的不变性。</li>
+<li><strong>结合性</strong>：如果 $g_1$ 和 $g_2$ 是对称操作，那么对于任何 $g_3$，都有 $(g_1 \circ g_2) \circ g_3 = g_1 \circ (g_2 \circ g_3)$，因为变换的顺序不会影响最终结果。</li>
+<li><strong>单位元</strong>：存在一个单位操作 $e$，使得对于任何对称操作 $g$，都有 $e \circ g = g \circ e = g$。这个单位操作对应于不进行任何变换。</li>
+<li><strong>逆元</strong>：对于每个对称操作 $g$，存在一个逆操作 $g^{-1}$，使得 $g \circ g^{-1} = g^{-1} \circ g = e$。这个逆操作对应于撤销变换。</li>
+</ol>
+<p>注意：$g \circ h$ 表示先应用变换 $g$，再应用变换 $h$。</p>
+<p>下面以等边三角行为例说明对称群的概念：
+<img alt="等边三角形的对称群" loading="lazy" src="/geometric_deeplearning/geometric02.png"></p>
+<p>在这个例子中，等边三角形的对称群包含六个元素：三个旋转操作（0度、120度、240度）和三个反射操作（通过每个顶点的垂直线）。这些操作满足群的四个性质，因此构成一个群，称为 $D_3$，即三角形的二面体群。
+数学上，我们可以把这种操作看做映射：
+$$g: \mathcal{X} \rightarrow \mathcal{X}$$
+其中 $\mathcal{X}$ 是数据空间。对于一个对称群 $G$中的每个元素 $g \in G$，我们都有一个对应的映射 $g$。
+例如，$D_3$同样可以表示为矩阵群：
+$$
+D_3 = \left\{
+\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 1 &amp; 2 &amp; 3 \end{pmatrix},
+\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 2 &amp; 3 &amp; 1 \end{pmatrix},
+\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 3 &amp; 1 &amp; 2 \end{pmatrix},
+\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 1 &amp; 3 &amp; 2 \end{pmatrix},
+\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 2 &amp; 1 &amp; 3 \end{pmatrix},
+\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 3 &amp; 2 &amp; 1 \end{pmatrix}
+\right\}
+$$</p>
+<h2 id="参考资料">参考资料<a hidden class="anchor" aria-hidden="true" href="#参考资料">#</a></h2>
+<ol>
+<li>Bronstein, M. M., Bruna, J., LeCun, Y., Szlam, A., &amp; Vandergheynst, P. (2017). Geometric deep learning: going beyond Euclidean data. <em>IEEE Signal Processing Magazine</em>, 34(4), 18-42.</li>
+<li>Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016). <em>Deep learning</em>. MIT press.</li>
+<li>Cohen, T. S., &amp; Welling, M. (2016). Group equivariant convolutional networks. In <em>International conference on machine learning</em> (pp. 2990-2999). PMLR.</li>
+<li>Kondor, R., &amp; Trivedi, S. (2018). On the generalization of equivariance and convolution in neural networks to the action of compact groups. In <em>International conference on machine learning</em> (pp. 2747-2755). PMLR.</li>
+<li>Wood, T., &amp; Shawe-Taylor, J. (1996). Representation theory and invariant neural networks. <em>Neural computation</em>, 8(5), 1003-1013.</li>
+<li>Mallat, S. (2016). Understanding deep convolutional networks. <em>Philosophical Transactions of the Royal Society A: Mathematical, Physical and Engineering Sciences</em>, 374(2065), 20150203.</li>
+<li>Lee, J. M. (2013). <em>Introduction to smooth manifolds</em>. Springer Science &amp; Business Media.</li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/zh/tags/geometric-deep-learning/">Geometric Deep Learning</a></li>
+      <li><a href="http://localhost:1313/zh/tags/machine-learning/">Machine Learning</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/zh/">Timothy&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

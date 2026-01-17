@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>种群方法 | Timothy&#39;s Blog</title>
+<meta name="keywords" content="编程, 种群方法, 数学建模">
+<meta name="description" content="深入探讨种群方法">
+<meta name="author" content="Timothy">
+<link rel="canonical" href="http://localhost:1313/zh/posts/population_method/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2dd7dd100f06b24f3d68c8d71d9065e5e0088bb70c9dac5b8f73c34ee1661edb.css" integrity="sha256-LdfdEA8Gsk89aMjXHZBl5eAIi7cMnaxbj3PDTuFmHts=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/population_method/">
+<link rel="alternate" hreflang="zh" href="http://localhost:1313/zh/posts/population_method/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+        ],
+        ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        throwOnError: false
+    });"></script>
+<meta property="og:url" content="http://localhost:1313/zh/posts/population_method/">
+  <meta property="og:site_name" content="Timothy&#39;s Blog">
+  <meta property="og:title" content="种群方法">
+  <meta property="og:description" content="深入探讨种群方法">
+  <meta property="og:locale" content="zh">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-01-16T10:00:00+08:00">
+    <meta property="article:modified_time" content="2026-01-16T10:00:00+08:00">
+    <meta property="article:tag" content="编程">
+    <meta property="article:tag" content="种群方法">
+    <meta property="article:tag" content="数学建模">
+    <meta property="og:image" content="http://localhost:1313/picture/population_cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:1313/picture/population_cover.png">
+<meta name="twitter:title" content="种群方法">
+<meta name="twitter:description" content="深入探讨种群方法">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/zh/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "种群方法",
+      "item": "http://localhost:1313/zh/posts/population_method/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "种群方法",
+  "name": "种群方法",
+  "description": "深入探讨种群方法",
+  "keywords": [
+    "编程", "种群方法", "数学建模"
+  ],
+  "articleBody": "本文介绍各种涉及使用一组设计点（称为个体）进行优化的种群方法。\n拥有分布在整个设计空间中的大量个体有助于算法更有效地探索设计空间。\n许多种群方法本质上是随机的，并且通常很容易并行化计算。\n种群迭代 种群方法迭代地改进 m 个设计的种群\n$$\rx^{(1)}, x^{(2)}, \\dots, x^{(m)}\r$$\r特定迭代中的种群被称为一代。\n算法的设计使得种群中的个体在多代后收敛到一个或多个局部最小值。\n本文讨论的各种方法在如何从当前一代生成新一代方面有所不同。\n种群方法从初始种群开始，通常是随机生成的。初始种群应分布在设计空间中以鼓励探索。\nabstract type PopulationMethod end function population_method(M::PopulationMethod, f, desings, k_max) population = init!(M,f,designs) for k in 1:k_max population = iterate!(M, f, population) end return population end 以下是用于生成初始种群的分布：\n均匀分布 (Uniform Distribution) 正态分布 (Normal Distribution) 柯西分布 (Cauchy Distribution) 遗传算法 遗传算法受到生物进化中自然选择过程的启发。\n与每个个体关联的设计点表示为染色体。在每一代中，适应度较高的个体的染色体通过选择、交叉和变异操作传递给下一代。\nstruct GeneticAlgorithm \u003c: PopulationMethod S # SelectionMethod C # CrossoverMethod U # MutationMethod end init!(M::GeneticAlgorithm, f, designs) = designs function step!(M::GeneticAlgorithm, f, population) S, C, U = M.S, M.C, M.U parents = select(S, f.(population)) children = [crossover(C,population[p[1]],population[p[2]]) for p in parents] return [mutate(U, c) for c in children] end 选择 选择操作从当前种群中选择个体作为下一代的父母。常见的选择方法包括基于排名的选择、锦标赛选择和轮盘赌选择。\n基于排名的选择根据个体的适应度对其进行排序，并相应地分配选择概率。 锦标赛选择随机选择一个个体子集，并选择其中适应度最高的作为父母。 轮盘赌选择分配与适应度成比例的选择概率，使适应度较高的个体有更高的被选中机会。 abstract type SelectionMethod end # Pick pairs randomly from top k parents struct TruncationSelection \u003c: SelectionMethod k # top k to keep end function select(t::TruncationSelection, y) p = sortperm(y) return [p[rand(1:t.k, 2)] for i in y] end # Pick parents by choosing best among random subsets struct TournamentSelection \u003c: SelectionMethod k # top k to keep end function select(t::TournamentSelection, y) getparent() = begin p = randperm(length(y)) p[argmin(y[p[1:t.k]])] end return [[getparent(), getparent()] for i in y] end # Sample parents proportionately to fitness struct RouletteWheelSelection \u003c: SelectionMethod end function select(::RouletteWheelSelection, y) y = maximum(y) .- y cat = Categorical(normalize(y, 1)) return [rand(cat, 2) for i in y] end 交叉 交叉结合父母的染色体以形成后代。与选择一样，有几种交叉方案\n在单点交叉中，选择一个随机交叉点，并交换父母染色体的片段以创建后代。 在两点交叉中，选择两个交叉点，并交换这些点之间的片段。 在均匀交叉中，每个基因以相等的概率独立地从父母之一中选择。 abstract type CrossoverMethod end struct SinglePointCrossover \u003c: CrossoverMethod end function crossover(::SinglePointCrossover, a, b) i = rand(eachindex(a)) return [a[1:i]; b[i+1:end]] end struct TwoPointCrossover \u003c: CrossoverMethod end function crossover(::TwoPointCrossover, a, b) n = length(a) i, j = rand(1:n, 2) if i \u003e j (i,j) = (j,i) end return [a[1:i]; b[i+1:j]; a[j+1:n]] end struct UniformCrossover \u003c: CrossoverMethod p # crossover probability end function crossover(U::UniformCrossover, a, b) return [rand() \u003e U.p ? u : v for (u,v) in zip(a,b)] end struct InterpolationCrossover \u003c: CrossoverMethod λ # interpolant end crossover(C::InterpolationCrossover, a, b) = (1-C.λ)*a + C.λ*b 变异 变异引入随机变化以保持种群内的遗传多样性。常见的变异方法是零均值高斯分布。\nabstract type MutationMethod end struct DistributionMutation \u003c: MutationMethod λ # mutation rate D # mutation distribution end function mutate(M::DistributionMutation, child) return [rand() \u003c M.λ ? v + rand(M.D) : v for v in child] end GaussianMutation(σ) = DistributionMutation(1.0, Normal(0,σ)) 染色体中的每个基因通常有很小的概率 λ 发生改变。对于具有 m 个基因的染色体，此变异率通常设置为 λ = 1/m，平均每个子染色体产生一个变异。\n差分进化 差分进化 (DE) 是一种基于种群的优化算法，利用向量差分来扰动种群成员。\n对于每个个体 x：\n从种群中选择三个不同的个体 a、b 和 c。 通过将 b 和 c 之间的加权差添加到 a 来生成试验向量： $$ v = a + F \\cdot (b - c) $$ 其中 F 是缩放因子，通常在 [0, 2] 范围内。 评估试验向量 v 的适应度。如果 v 的适应度优于 x，则在下一代中用 v 替换 x；否则，保留 x。 mutable struct DifferentialEvolution \u003c: PopulationMethod p # crossover probability w # differential weight end init!(M::DifferentialEvolution, f, designs) = designs function step!(M::DifferentialEvolution, f, population) p, w = M.p, M.w n, m = length(population[1]), length(population) for x in population a, b, c = sample(population, 3, replace=false) z = a + w*(b-c) x′ = crossover(UniformCrossover(p), x, z) if f(x′) \u003c f(x) x .= x′ end end return population end 粒子群优化 粒子群优化引入动量以加速向最小值的收敛。种群中的每个个体（或粒子）都会跟踪其当前位置、速度以及迄今为止看到的最佳位置。动量允许个体在有利方向上积累速度，而不受局部扰动的影响。\n在每次迭代中，每个个体都会加速向其看到的最佳位置以及任何个体迄今为止找到的最佳位置移动。加速度由随机项加权。\nmutable struct Particle x # position v # velocity x_best # best design thus far end mutable struct ParticleSwarm \u003c: PopulationMethod w # inertia c1 # first momentum coefficient c2 # second momentum coefficient V # initial particle velocity distribution best # best overall design thus far, and its value end function init!(M::ParticleSwarm, f, designs) population = [Particle(x,rand(M.V),copy(x)) for x in designs] best = (x=copy(population[1].x), y=Inf) for P in population y = f(P.x) if y \u003c best.y; best = (x=P.x, y=y); end end M.best = best return population end function step!(M::ParticleSwarm, f, population) w, c1, c2, best = M.w, M.c1, M.c2, M.best n = length(best.x) for P in population r1, r2 = rand(n), rand(n) P.x += P.v P.v = w*P.v + c1*r1.*(P.x_best - P.x) + c2*r2.*(best.x - P.x) y = f(P.x) if y \u003c best.y; best = (x=copy(P.x), y=y); end if y \u003c f(P.x_best); P.x_best .= P.x; end end M.best = best return population end 萤火虫算法 萤火虫算法的灵感来自于萤火虫闪烁光芒以吸引同种配偶的方式。在萤火虫算法中，种群中的每个个体都是一只萤火虫，可以通过闪光来吸引其他萤火虫。\n在每次迭代中，所有萤火虫都向所有更有吸引力的萤火虫移动。萤火虫的吸引力与其表现成正比。\nstruct Firefly \u003c: PopulationMethod α # walk step size β # source intensity brightness # intensity function end init!(M::Firefly, f, designs) = designs function step!(M::Firefly, f, population) α, β, brightness = M.α, M.β, M.brightness m = length(population[1]) N = MvNormal(I(m)) for a in population, b in population if f(b) \u003c f(a) r = norm(b-a) a .+= β*brightness(r)*(b-a) + α*rand(N) end end return population end 布谷鸟搜索 布谷鸟搜索是另一种受自然启发的算法，以布谷鸟命名，布谷鸟从事一种巢寄生行为。布谷鸟将蛋产在其他鸟类的巢中。\n在布谷鸟搜索中，每个巢代表一个设计点。可以使用来自巢的莱维飞行（Lévy flights）产生新的设计点，这是步长服从重尾分布（通常是柯西分布）的随机游走。\nmutable struct CuckooSearch \u003c: PopulationMethod p_s # search fraction p_a # nest abandonment fraction C # flight distribution end function init!(M::CuckooSearch, f, designs) return [(x=x, y=f(x)) for x in designs] end function step!(M::CuckooSearch, f, population) p_s, p_a, C = M.p_s, M.p_a, M.C m, n = length(population), length(population[1].x) m_search = round(Int, m*p_s) m_abandon = round(Int, m*p_a) for i in 1:m_search j, k = rand(1:m), rand(1:m) x = population[j].x + rand(C,n) y = f(x) if y \u003c population[k].y population[k] = (x=x, y=y) end end p = sortperm(population, by=nest-\u003enest.y, rev=true) for i in 1:m_abandon j = rand(1:m-m_abandon)+m_abandon x′ = population[p[j]].x + rand(C,n) population[p[i]] = (x=x′, y=f(x′)) end return population end 混合方法 许多种群方法在全局搜索中表现良好，能够避免局部最小值并找到设计空间的最佳区域。不幸的是，与下降方法相比，这些方法在局部搜索中表现不佳。\n已经开发了几种混合方法，将种群方法与基于下降的特征相结合，以提高其在局部搜索中的性能。\n在 拉马克学习 (Lamarckian learning) 中，种群方法扩展了局部搜索方法，该方法局部改进每个个体。原始个体及其目标函数值被个体的优化对应物所取代。 在 鲍德温学习 (Baldwinian learning) 中，相同的局部搜索方法应用于每个个体，但结果仅用于更新个体的目标函数值。个体不会被替换，而只是与优化的目标函数值相关联。 总结 种群方法是强大的优化技术，利用一组设计点来有效地探索设计空间。通过利用受自然过程（如遗传算法、差分进化和粒子群优化）启发的机制，这些方法可以导航复杂的景观并避免局部最小值。结合种群方法和局部搜索技术的混合方法进一步增强了它们的性能，使它们成为解决各种优化问题的通用工具。\n",
+  "wordCount" : "822",
+  "inLanguage": "zh",
+  "image":"http://localhost:1313/picture/population_cover.png","datePublished": "2026-01-16T10:00:00+08:00",
+  "dateModified": "2026-01-16T10:00:00+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Timothy"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/zh/posts/population_method/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Timothy's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/zh/" accesskey="h" title="Timothy&#39;s Blog (Alt + H)">Timothy&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                    <ul class="lang-switch"><li>|</li>
+                        <li>
+                            <a href="http://localhost:1313/" title="English"
+                                aria-label="English">En</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/zh/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/zh/search/" title="Search">
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/zh/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      种群方法
+    </h1>
+    <div class="post-description">
+      深入探讨种群方法
+    </div>
+    <div class="post-meta"><span title='2026-01-16 10:00:00 +0800 CST'>2026年1月16日</span>&nbsp;·&nbsp;<span>Timothy</span>&nbsp;|&nbsp;<span>语言:</span>
+<ul class="i18n_list">
+    <li>
+        <a href="http://localhost:1313/posts/population_method/">En</a>
+    </li>
+</ul>
+
+</div>
+  </header> 
+<figure class="entry-cover">
+        <img loading="eager" src="http://localhost:1313/picture/population_cover.png" alt="Population Method Diagram">
+        <figcaption>优化中各种种群方法的概述</figcaption>
+</figure>
+  <div class="post-content"><p>本文介绍各种涉及使用一组设计点（称为个体）进行优化的种群方法。</p>
+<p>拥有分布在整个设计空间中的大量个体有助于算法更有效地探索设计空间。</p>
+<p>许多种群方法本质上是随机的，并且通常很容易并行化计算。</p>
+<h2 id="种群迭代">种群迭代<a hidden class="anchor" aria-hidden="true" href="#种群迭代">#</a></h2>
+<p>种群方法迭代地改进 m 个设计的种群</p>
+<div>
+$$
+x^{(1)}, x^{(2)}, \dots, x^{(m)}
+$$
+</div>
+<p>特定迭代中的种群被称为一代。</p>
+<p>算法的设计使得种群中的个体在多代后收敛到一个或多个局部最小值。</p>
+<p>本文讨论的各种方法在如何从当前一代生成新一代方面有所不同。</p>
+<p>种群方法从初始种群开始，通常是随机生成的。初始种群应分布在设计空间中以鼓励探索。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">abstract type</span> <span style="color:#66d9ef">PopulationMethod</span> <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> population_method(M<span style="color:#f92672">::</span><span style="color:#66d9ef">PopulationMethod</span>, f, desings, k_max)
+</span></span><span style="display:flex;"><span>    population <span style="color:#f92672">=</span> init!(M,f,designs)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> k <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>k_max
+</span></span><span style="display:flex;"><span>        population <span style="color:#f92672">=</span> iterate!(M, f, population)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> population
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p>以下是用于生成初始种群的分布：</p>
+<ul>
+<li>均匀分布 (Uniform Distribution)</li>
+<li>正态分布 (Normal Distribution)</li>
+<li>柯西分布 (Cauchy Distribution)</li>
+</ul>
+<p><img alt="Population Initialization" loading="lazy" src="/picture/population_method01.png"></p>
+<h2 id="遗传算法">遗传算法<a hidden class="anchor" aria-hidden="true" href="#遗传算法">#</a></h2>
+<p>遗传算法受到生物进化中自然选择过程的启发。</p>
+<p>与每个个体关联的设计点表示为染色体。在每一代中，适应度较高的个体的染色体通过选择、交叉和变异操作传递给下一代。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#66d9ef">GeneticAlgorithm</span> <span style="color:#f92672">&lt;:</span> <span style="color:#66d9ef">PopulationMethod</span>
+</span></span><span style="display:flex;"><span>    S <span style="color:#75715e"># SelectionMethod</span>
+</span></span><span style="display:flex;"><span>    C <span style="color:#75715e"># CrossoverMethod</span>
+</span></span><span style="display:flex;"><span>    U <span style="color:#75715e"># MutationMethod</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>init!(M<span style="color:#f92672">::</span><span style="color:#66d9ef">GeneticAlgorithm</span>, f, designs) <span style="color:#f92672">=</span> designs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> step!(M<span style="color:#f92672">::</span><span style="color:#66d9ef">GeneticAlgorithm</span>, f, population)
+</span></span><span style="display:flex;"><span>    S, C, U <span style="color:#f92672">=</span> M<span style="color:#f92672">.</span>S, M<span style="color:#f92672">.</span>C, M<span style="color:#f92672">.</span>U
+</span></span><span style="display:flex;"><span>    parents <span style="color:#f92672">=</span> select(S, f<span style="color:#f92672">.</span>(population))
+</span></span><span style="display:flex;"><span>    children <span style="color:#f92672">=</span> [crossover(C,population[p[<span style="color:#ae81ff">1</span>]],population[p[<span style="color:#ae81ff">2</span>]])
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> p <span style="color:#66d9ef">in</span> parents]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [mutate(U, c) <span style="color:#66d9ef">for</span> c <span style="color:#66d9ef">in</span> children]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><h3 id="选择">选择<a hidden class="anchor" aria-hidden="true" href="#选择">#</a></h3>
+<p>选择操作从当前种群中选择个体作为下一代的父母。常见的选择方法包括基于排名的选择、锦标赛选择和轮盘赌选择。</p>
+<p>基于排名的选择根据个体的适应度对其进行排序，并相应地分配选择概率。
+<img alt="Rank-based Selection" loading="lazy" src="/picture/population_method02.png"></p>
+<p>锦标赛选择随机选择一个个体子集，并选择其中适应度最高的作为父母。
+<img alt="Tournament Selection" loading="lazy" src="/picture/population_method03.png"></p>
+<p>轮盘赌选择分配与适应度成比例的选择概率，使适应度较高的个体有更高的被选中机会。
+<img alt="Roulette Wheel Selection" loading="lazy" src="/picture/population_method05.png"></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">abstract type</span> <span style="color:#66d9ef">SelectionMethod</span> <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Pick pairs randomly from top k parents</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#66d9ef">TruncationSelection</span> <span style="color:#f92672">&lt;:</span> <span style="color:#66d9ef">SelectionMethod</span>
+</span></span><span style="display:flex;"><span>    k <span style="color:#75715e"># top k to keep</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> select(t<span style="color:#f92672">::</span><span style="color:#66d9ef">TruncationSelection</span>, y)
+</span></span><span style="display:flex;"><span>    p <span style="color:#f92672">=</span> sortperm(y)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [p[rand(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>t<span style="color:#f92672">.</span>k, <span style="color:#ae81ff">2</span>)] <span style="color:#66d9ef">for</span> i <span style="color:#66d9ef">in</span> y]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Pick parents by choosing best among random subsets</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#66d9ef">TournamentSelection</span> <span style="color:#f92672">&lt;:</span> <span style="color:#66d9ef">SelectionMethod</span>
+</span></span><span style="display:flex;"><span>    k <span style="color:#75715e"># top k to keep</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> select(t<span style="color:#f92672">::</span><span style="color:#66d9ef">TournamentSelection</span>, y)
+</span></span><span style="display:flex;"><span>    getparent() <span style="color:#f92672">=</span> <span style="color:#66d9ef">begin</span>
+</span></span><span style="display:flex;"><span>        p <span style="color:#f92672">=</span> randperm(length(y))
+</span></span><span style="display:flex;"><span>        p[argmin(y[p[<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>t<span style="color:#f92672">.</span>k]])]
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [[getparent(), getparent()] <span style="color:#66d9ef">for</span> i <span style="color:#66d9ef">in</span> y]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Sample parents proportionately to fitness</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#66d9ef">RouletteWheelSelection</span> <span style="color:#f92672">&lt;:</span> <span style="color:#66d9ef">SelectionMethod</span> <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> select(<span style="color:#f92672">::</span><span style="color:#66d9ef">RouletteWheelSelection</span>, y)
+</span></span><span style="display:flex;"><span>    y <span style="color:#f92672">=</span> maximum(y) <span style="color:#f92672">.-</span> y
+</span></span><span style="display:flex;"><span>    cat <span style="color:#f92672">=</span> Categorical(normalize(y, <span style="color:#ae81ff">1</span>))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [rand(cat, <span style="color:#ae81ff">2</span>) <span style="color:#66d9ef">for</span> i <span style="color:#66d9ef">in</span> y]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><h3 id="交叉">交叉<a hidden class="anchor" aria-hidden="true" href="#交叉">#</a></h3>
+<p>交叉结合父母的染色体以形成后代。与选择一样，有几种交叉方案</p>
+<ol>
+<li>在单点交叉中，选择一个随机交叉点，并交换父母染色体的片段以创建后代。
+<img alt="Single-point Crossover" loading="lazy" src="/picture/population_method06.png"></li>
+<li>在两点交叉中，选择两个交叉点，并交换这些点之间的片段。
+<img alt="Two-point Crossover" loading="lazy" src="/picture/population_method07.png"></li>
+<li>在均匀交叉中，每个基因以相等的概率独立地从父母之一中选择。
+<img alt="Uniform Crossover" loading="lazy" src="/picture/population_method08.png"></li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">abstract type</span> <span style="color:#66d9ef">CrossoverMethod</span> <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#66d9ef">SinglePointCrossover</span> <span style="color:#f92672">&lt;:</span> <span style="color:#66d9ef">CrossoverMethod</span> <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> crossover(<span style="color:#f92672">::</span><span style="color:#66d9ef">SinglePointCrossover</span>, a, b)
+</span></span><span style="display:flex;"><span>    i <span style="color:#f92672">=</span> rand(eachindex(a))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [a[<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>i]; b[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span><span style="color:#66d9ef">end</span>]]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#66d9ef">TwoPointCrossover</span> <span style="color:#f92672">&lt;:</span> <span style="color:#66d9ef">CrossoverMethod</span> <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> crossover(<span style="color:#f92672">::</span><span style="color:#66d9ef">TwoPointCrossover</span>, a, b)
+</span></span><span style="display:flex;"><span>    n <span style="color:#f92672">=</span> length(a)
+</span></span><span style="display:flex;"><span>    i, j <span style="color:#f92672">=</span> rand(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>n, <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> i <span style="color:#f92672">&gt;</span> j
+</span></span><span style="display:flex;"><span>        (i,j) <span style="color:#f92672">=</span> (j,i)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [a[<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>i]; b[i<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>j]; a[j<span style="color:#f92672">+</span><span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>n]]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#66d9ef">UniformCrossover</span> <span style="color:#f92672">&lt;:</span> <span style="color:#66d9ef">CrossoverMethod</span>
+</span></span><span style="display:flex;"><span>    p <span style="color:#75715e"># crossover probability</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> crossover(U<span style="color:#f92672">::</span><span style="color:#66d9ef">UniformCrossover</span>, a, b)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [rand() <span style="color:#f92672">&gt;</span> U<span style="color:#f92672">.</span>p <span style="color:#f92672">?</span> u <span style="color:#f92672">:</span> v <span style="color:#66d9ef">for</span> (u,v) <span style="color:#66d9ef">in</span> zip(a,b)]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#66d9ef">InterpolationCrossover</span> <span style="color:#f92672">&lt;:</span> <span style="color:#66d9ef">CrossoverMethod</span>
+</span></span><span style="display:flex;"><span>    λ <span style="color:#75715e"># interpolant</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>crossover(C<span style="color:#f92672">::</span><span style="color:#66d9ef">InterpolationCrossover</span>, a, b) <span style="color:#f92672">=</span> (<span style="color:#ae81ff">1</span><span style="color:#f92672">-</span>C<span style="color:#f92672">.</span>λ)<span style="color:#f92672">*</span>a <span style="color:#f92672">+</span> C<span style="color:#f92672">.</span>λ<span style="color:#f92672">*</span>b
+</span></span></code></pre></div><h3 id="变异">变异<a hidden class="anchor" aria-hidden="true" href="#变异">#</a></h3>
+<p>变异引入随机变化以保持种群内的遗传多样性。常见的变异方法是零均值高斯分布。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">abstract type</span> <span style="color:#66d9ef">MutationMethod</span> <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#66d9ef">DistributionMutation</span> <span style="color:#f92672">&lt;:</span> <span style="color:#66d9ef">MutationMethod</span>
+</span></span><span style="display:flex;"><span>    λ <span style="color:#75715e"># mutation rate</span>
+</span></span><span style="display:flex;"><span>    D <span style="color:#75715e"># mutation distribution</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> mutate(M<span style="color:#f92672">::</span><span style="color:#66d9ef">DistributionMutation</span>, child)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [rand() <span style="color:#f92672">&lt;</span> M<span style="color:#f92672">.</span>λ <span style="color:#f92672">?</span> v <span style="color:#f92672">+</span> rand(M<span style="color:#f92672">.</span>D) <span style="color:#f92672">:</span> v <span style="color:#66d9ef">for</span> v <span style="color:#66d9ef">in</span> child]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GaussianMutation(σ) <span style="color:#f92672">=</span> DistributionMutation(<span style="color:#ae81ff">1.0</span>, Normal(<span style="color:#ae81ff">0</span>,σ))
+</span></span></code></pre></div><p>染色体中的每个基因通常有很小的概率 λ 发生改变。对于具有 m 个基因的染色体，此变异率通常设置为 λ = 1/m，平均每个子染色体产生一个变异。</p>
+<p><img alt="Gaussian Mutation" loading="lazy" src="/picture/population_method09.png"></p>
+<h2 id="差分进化">差分进化<a hidden class="anchor" aria-hidden="true" href="#差分进化">#</a></h2>
+<p>差分进化 (DE) 是一种基于种群的优化算法，利用向量差分来扰动种群成员。</p>
+<p>对于每个个体 x：</p>
+<ol>
+<li>从种群中选择三个不同的个体 a、b 和 c。</li>
+<li>通过将 b 和 c 之间的加权差添加到 a 来生成试验向量：
+$$
+v = a + F \cdot (b - c)
+$$
+其中 F 是缩放因子，通常在 [0, 2] 范围内。</li>
+<li>评估试验向量 v 的适应度。如果 v 的适应度优于 x，则在下一代中用 v 替换 x；否则，保留 x。</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">mutable struct</span> <span style="color:#66d9ef">DifferentialEvolution</span> <span style="color:#f92672">&lt;:</span> <span style="color:#66d9ef">PopulationMethod</span>
+</span></span><span style="display:flex;"><span>    p <span style="color:#75715e"># crossover probability</span>
+</span></span><span style="display:flex;"><span>    w <span style="color:#75715e"># differential weight</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>init!(M<span style="color:#f92672">::</span><span style="color:#66d9ef">DifferentialEvolution</span>, f, designs) <span style="color:#f92672">=</span> designs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> step!(M<span style="color:#f92672">::</span><span style="color:#66d9ef">DifferentialEvolution</span>, f, population)
+</span></span><span style="display:flex;"><span>    p, w <span style="color:#f92672">=</span> M<span style="color:#f92672">.</span>p, M<span style="color:#f92672">.</span>w
+</span></span><span style="display:flex;"><span>    n, m <span style="color:#f92672">=</span> length(population[<span style="color:#ae81ff">1</span>]), length(population)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> x <span style="color:#66d9ef">in</span> population
+</span></span><span style="display:flex;"><span>        a, b, c <span style="color:#f92672">=</span> sample(population, <span style="color:#ae81ff">3</span>, replace<span style="color:#f92672">=</span>false)
+</span></span><span style="display:flex;"><span>        z <span style="color:#f92672">=</span> a <span style="color:#f92672">+</span> w<span style="color:#f92672">*</span>(b<span style="color:#f92672">-</span>c)
+</span></span><span style="display:flex;"><span>        x′ <span style="color:#f92672">=</span> crossover(UniformCrossover(p), x, z)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> f(x′) <span style="color:#f92672">&lt;</span> f(x)
+</span></span><span style="display:flex;"><span>            x <span style="color:#f92672">.=</span> x′
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> population
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p><img alt="Differential Evolution" loading="lazy" src="/picture/population_method10.png"></p>
+<h2 id="粒子群优化">粒子群优化<a hidden class="anchor" aria-hidden="true" href="#粒子群优化">#</a></h2>
+<p>粒子群优化引入动量以加速向最小值的收敛。种群中的每个个体（或粒子）都会跟踪其当前位置、速度以及迄今为止看到的最佳位置。动量允许个体在有利方向上积累速度，而不受局部扰动的影响。</p>
+<p>在每次迭代中，每个个体都会加速向其看到的最佳位置以及任何个体迄今为止找到的最佳位置移动。加速度由随机项加权。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">mutable struct</span> <span style="color:#66d9ef">Particle</span>
+</span></span><span style="display:flex;"><span>    x <span style="color:#75715e"># position</span>
+</span></span><span style="display:flex;"><span>    v <span style="color:#75715e"># velocity</span>
+</span></span><span style="display:flex;"><span>    x_best <span style="color:#75715e"># best design thus far</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">mutable struct</span> <span style="color:#66d9ef">ParticleSwarm</span> <span style="color:#f92672">&lt;:</span> <span style="color:#66d9ef">PopulationMethod</span>
+</span></span><span style="display:flex;"><span>    w <span style="color:#75715e"># inertia</span>
+</span></span><span style="display:flex;"><span>    c1 <span style="color:#75715e"># first momentum coefficient</span>
+</span></span><span style="display:flex;"><span>    c2 <span style="color:#75715e"># second momentum coefficient</span>
+</span></span><span style="display:flex;"><span>    V <span style="color:#75715e"># initial particle velocity distribution</span>
+</span></span><span style="display:flex;"><span>    best <span style="color:#75715e"># best overall design thus far, and its value</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> init!(M<span style="color:#f92672">::</span><span style="color:#66d9ef">ParticleSwarm</span>, f, designs)
+</span></span><span style="display:flex;"><span>    population <span style="color:#f92672">=</span> [Particle(x,rand(M<span style="color:#f92672">.</span>V),copy(x)) <span style="color:#66d9ef">for</span> x <span style="color:#66d9ef">in</span> designs]
+</span></span><span style="display:flex;"><span>    best <span style="color:#f92672">=</span> (x<span style="color:#f92672">=</span>copy(population[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>x), y<span style="color:#f92672">=</span>Inf)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> P <span style="color:#66d9ef">in</span> population
+</span></span><span style="display:flex;"><span>        y <span style="color:#f92672">=</span> f(P<span style="color:#f92672">.</span>x)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> y <span style="color:#f92672">&lt;</span> best<span style="color:#f92672">.</span>y; best <span style="color:#f92672">=</span> (x<span style="color:#f92672">=</span>P<span style="color:#f92672">.</span>x, y<span style="color:#f92672">=</span>y); <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    M<span style="color:#f92672">.</span>best <span style="color:#f92672">=</span> best
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> population
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> step!(M<span style="color:#f92672">::</span><span style="color:#66d9ef">ParticleSwarm</span>, f, population)
+</span></span><span style="display:flex;"><span>    w, c1, c2, best <span style="color:#f92672">=</span> M<span style="color:#f92672">.</span>w, M<span style="color:#f92672">.</span>c1, M<span style="color:#f92672">.</span>c2, M<span style="color:#f92672">.</span>best
+</span></span><span style="display:flex;"><span>    n <span style="color:#f92672">=</span> length(best<span style="color:#f92672">.</span>x)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> P <span style="color:#66d9ef">in</span> population
+</span></span><span style="display:flex;"><span>        r1, r2 <span style="color:#f92672">=</span> rand(n), rand(n)
+</span></span><span style="display:flex;"><span>        P<span style="color:#f92672">.</span>x <span style="color:#f92672">+=</span> P<span style="color:#f92672">.</span>v
+</span></span><span style="display:flex;"><span>        P<span style="color:#f92672">.</span>v <span style="color:#f92672">=</span> w<span style="color:#f92672">*</span>P<span style="color:#f92672">.</span>v <span style="color:#f92672">+</span> c1<span style="color:#f92672">*</span>r1<span style="color:#f92672">.*</span>(P<span style="color:#f92672">.</span>x_best <span style="color:#f92672">-</span> P<span style="color:#f92672">.</span>x) <span style="color:#f92672">+</span>
+</span></span><span style="display:flex;"><span>              c2<span style="color:#f92672">*</span>r2<span style="color:#f92672">.*</span>(best<span style="color:#f92672">.</span>x <span style="color:#f92672">-</span> P<span style="color:#f92672">.</span>x)
+</span></span><span style="display:flex;"><span>        y <span style="color:#f92672">=</span> f(P<span style="color:#f92672">.</span>x)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> y <span style="color:#f92672">&lt;</span> best<span style="color:#f92672">.</span>y; best <span style="color:#f92672">=</span> (x<span style="color:#f92672">=</span>copy(P<span style="color:#f92672">.</span>x), y<span style="color:#f92672">=</span>y); <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> y <span style="color:#f92672">&lt;</span> f(P<span style="color:#f92672">.</span>x_best); P<span style="color:#f92672">.</span>x_best <span style="color:#f92672">.=</span> P<span style="color:#f92672">.</span>x; <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    M<span style="color:#f92672">.</span>best <span style="color:#f92672">=</span> best
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> population
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p><img alt="Particle Swarm Optimization" loading="lazy" src="/picture/population_method11.png"></p>
+<h2 id="萤火虫算法">萤火虫算法<a hidden class="anchor" aria-hidden="true" href="#萤火虫算法">#</a></h2>
+<p>萤火虫算法的灵感来自于萤火虫闪烁光芒以吸引同种配偶的方式。在萤火虫算法中，种群中的每个个体都是一只萤火虫，可以通过闪光来吸引其他萤火虫。</p>
+<p>在每次迭代中，所有萤火虫都向所有更有吸引力的萤火虫移动。萤火虫的吸引力与其表现成正比。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#66d9ef">Firefly</span> <span style="color:#f92672">&lt;:</span> <span style="color:#66d9ef">PopulationMethod</span>
+</span></span><span style="display:flex;"><span>    α <span style="color:#75715e"># walk step size</span>
+</span></span><span style="display:flex;"><span>    β <span style="color:#75715e"># source intensity</span>
+</span></span><span style="display:flex;"><span>    brightness <span style="color:#75715e"># intensity function</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>init!(M<span style="color:#f92672">::</span><span style="color:#66d9ef">Firefly</span>, f, designs) <span style="color:#f92672">=</span> designs
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> step!(M<span style="color:#f92672">::</span><span style="color:#66d9ef">Firefly</span>, f, population)
+</span></span><span style="display:flex;"><span>    α, β, brightness <span style="color:#f92672">=</span> M<span style="color:#f92672">.</span>α, M<span style="color:#f92672">.</span>β, M<span style="color:#f92672">.</span>brightness
+</span></span><span style="display:flex;"><span>    m <span style="color:#f92672">=</span> length(population[<span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>    N <span style="color:#f92672">=</span> MvNormal(I(m))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> a <span style="color:#66d9ef">in</span> population, b <span style="color:#66d9ef">in</span> population
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> f(b) <span style="color:#f92672">&lt;</span> f(a)
+</span></span><span style="display:flex;"><span>            r <span style="color:#f92672">=</span> norm(b<span style="color:#f92672">-</span>a)
+</span></span><span style="display:flex;"><span>            a <span style="color:#f92672">.+=</span> β<span style="color:#f92672">*</span>brightness(r)<span style="color:#f92672">*</span>(b<span style="color:#f92672">-</span>a) <span style="color:#f92672">+</span> α<span style="color:#f92672">*</span>rand(N)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> population
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p><img alt="Firefly Algorithm" loading="lazy" src="/picture/population_method12.png"></p>
+<h2 id="布谷鸟搜索">布谷鸟搜索<a hidden class="anchor" aria-hidden="true" href="#布谷鸟搜索">#</a></h2>
+<p>布谷鸟搜索是另一种受自然启发的算法，以布谷鸟命名，布谷鸟从事一种巢寄生行为。布谷鸟将蛋产在其他鸟类的巢中。</p>
+<p>在布谷鸟搜索中，每个巢代表一个设计点。可以使用来自巢的莱维飞行（Lévy flights）产生新的设计点，这是步长服从重尾分布（通常是柯西分布）的随机游走。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-julia" data-lang="julia"><span style="display:flex;"><span><span style="color:#66d9ef">mutable struct</span> <span style="color:#66d9ef">CuckooSearch</span> <span style="color:#f92672">&lt;:</span> <span style="color:#66d9ef">PopulationMethod</span>
+</span></span><span style="display:flex;"><span>    p_s <span style="color:#75715e"># search fraction</span>
+</span></span><span style="display:flex;"><span>    p_a <span style="color:#75715e"># nest abandonment fraction</span>
+</span></span><span style="display:flex;"><span>    C <span style="color:#75715e"># flight distribution</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> init!(M<span style="color:#f92672">::</span><span style="color:#66d9ef">CuckooSearch</span>, f, designs)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> [(x<span style="color:#f92672">=</span>x, y<span style="color:#f92672">=</span>f(x)) <span style="color:#66d9ef">for</span> x <span style="color:#66d9ef">in</span> designs]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> step!(M<span style="color:#f92672">::</span><span style="color:#66d9ef">CuckooSearch</span>, f, population)
+</span></span><span style="display:flex;"><span>    p_s, p_a, C <span style="color:#f92672">=</span> M<span style="color:#f92672">.</span>p_s, M<span style="color:#f92672">.</span>p_a, M<span style="color:#f92672">.</span>C
+</span></span><span style="display:flex;"><span>    m, n <span style="color:#f92672">=</span> length(population), length(population[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">.</span>x)
+</span></span><span style="display:flex;"><span>    m_search <span style="color:#f92672">=</span> round(<span style="color:#66d9ef">Int</span>, m<span style="color:#f92672">*</span>p_s)
+</span></span><span style="display:flex;"><span>    m_abandon <span style="color:#f92672">=</span> round(<span style="color:#66d9ef">Int</span>, m<span style="color:#f92672">*</span>p_a)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>m_search
+</span></span><span style="display:flex;"><span>        j, k <span style="color:#f92672">=</span> rand(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>m), rand(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>m)
+</span></span><span style="display:flex;"><span>        x <span style="color:#f92672">=</span> population[j]<span style="color:#f92672">.</span>x <span style="color:#f92672">+</span> rand(C,n)
+</span></span><span style="display:flex;"><span>        y <span style="color:#f92672">=</span> f(x)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> y <span style="color:#f92672">&lt;</span> population[k]<span style="color:#f92672">.</span>y
+</span></span><span style="display:flex;"><span>            population[k] <span style="color:#f92672">=</span> (x<span style="color:#f92672">=</span>x, y<span style="color:#f92672">=</span>y)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    p <span style="color:#f92672">=</span> sortperm(population, by<span style="color:#f92672">=</span>nest<span style="color:#f92672">-&gt;</span>nest<span style="color:#f92672">.</span>y, rev<span style="color:#f92672">=</span>true)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#66d9ef">in</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>m_abandon
+</span></span><span style="display:flex;"><span>        j <span style="color:#f92672">=</span> rand(<span style="color:#ae81ff">1</span><span style="color:#f92672">:</span>m<span style="color:#f92672">-</span>m_abandon)<span style="color:#f92672">+</span>m_abandon
+</span></span><span style="display:flex;"><span>        x′ <span style="color:#f92672">=</span> population[p[j]]<span style="color:#f92672">.</span>x <span style="color:#f92672">+</span> rand(C,n)
+</span></span><span style="display:flex;"><span>        population[p[i]] <span style="color:#f92672">=</span> (x<span style="color:#f92672">=</span>x′, y<span style="color:#f92672">=</span>f(x′))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">end</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> population
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">end</span>
+</span></span></code></pre></div><p><img alt="Cuckoo Search" loading="lazy" src="/picture/population_method13.png"></p>
+<h2 id="混合方法">混合方法<a hidden class="anchor" aria-hidden="true" href="#混合方法">#</a></h2>
+<p>许多种群方法在全局搜索中表现良好，能够避免局部最小值并找到设计空间的最佳区域。不幸的是，与下降方法相比，这些方法在局部搜索中表现不佳。</p>
+<p>已经开发了几种混合方法，将种群方法与基于下降的特征相结合，以提高其在局部搜索中的性能。</p>
+<ul>
+<li>在 <strong>拉马克学习 (Lamarckian learning)</strong> 中，种群方法扩展了局部搜索方法，该方法局部改进每个个体。原始个体及其目标函数值被个体的优化对应物所取代。</li>
+<li>在 <strong>鲍德温学习 (Baldwinian learning)</strong> 中，相同的局部搜索方法应用于每个个体，但结果仅用于更新个体的目标函数值。个体不会被替换，而只是与优化的目标函数值相关联。</li>
+</ul>
+<h2 id="总结">总结<a hidden class="anchor" aria-hidden="true" href="#总结">#</a></h2>
+<p>种群方法是强大的优化技术，利用一组设计点来有效地探索设计空间。通过利用受自然过程（如遗传算法、差分进化和粒子群优化）启发的机制，这些方法可以导航复杂的景观并避免局部最小值。结合种群方法和局部搜索技术的混合方法进一步增强了它们的性能，使它们成为解决各种优化问题的通用工具。</p>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/zh/tags/%E7%BC%96%E7%A8%8B/">编程</a></li>
+      <li><a href="http://localhost:1313/zh/tags/%E7%A7%8D%E7%BE%A4%E6%96%B9%E6%B3%95/">种群方法</a></li>
+      <li><a href="http://localhost:1313/zh/tags/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/">数学建模</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/zh/">Timothy&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

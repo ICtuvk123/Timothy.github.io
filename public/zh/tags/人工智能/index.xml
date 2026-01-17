@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>人工智能 on Timothy&#39;s Blog</title>
+    <link>http://localhost:1313/zh/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/</link>
+    <description>Recent content in 人工智能 on Timothy&#39;s Blog</description>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 16 Jan 2026 10:00:00 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/zh/tags/%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>强化学习简介</title>
+      <link>http://localhost:1313/zh/posts/reinforcement_learning01/</link>
+      <pubDate>Fri, 16 Jan 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/posts/reinforcement_learning01/</guid>
+      <description>&lt;h2 id=&#34;简介&#34;&gt;简介&lt;/h2&gt;
+&lt;p&gt;强化学习 (RL) 是一种机器学习类型，其中智能体通过在环境中采取行动来学习做出决策，以最大化某种累积奖励的概念。与从标记数据集学习模型的监督学习不同，RL 依赖于来自环境的奖励或惩罚形式的反馈。&lt;/p&gt;
+&lt;h2 id=&#34;策略与行动&#34;&gt;策略与行动&lt;/h2&gt;
+&lt;p&gt;智能体维护一个内部状态 $z_t$，并将其传递给策略 $\pi$ 以选择行动 $a_t = \pi(z_t)$。&lt;/p&gt;
+&lt;h2 id=&#34;目标&#34;&gt;目标&lt;/h2&gt;
+&lt;p&gt;智能体的目标是选择一个策略 π，以最大化预期奖励的总和：&lt;/p&gt;
+&lt;div&gt;
+$$
+\begin{aligned}
+V^\pi(s_0) = \mathbb{E}_{a_0, s_1, a_1, \dots, a_T, s_T \sim p(\cdot \mid s_0, \pi)} \left[ \sum_{t=0}^T R(s_t, a_t) \right]
+\end{aligned}
+$$
+&lt;/div&gt;
+&lt;p&gt;其中 $s_0$ 是初始状态，$p(\cdot|s_0, \pi)$ 是策略 π 从状态 $s_0$ 开始诱导的轨迹分布，$R(s_t, a_t)$ 是在状态 $s_t$ 采取行动 $a_t$ 后收到的奖励。
+期望是关于：&lt;/p&gt;
+&lt;div&gt;
+$$
+\begin{aligned}
+p(a_0, s_1, a_1, \dots, a_T, s_T \mid s_0, \pi) 
+&amp;= \pi(a_0 \mid s_0) p_{env}(o_1 \mid a_0) \vartheta(s_1 = U(s_0, a_0, o_1)) \\
+&amp;= \prod_{t=1}^T \pi(a_t \mid s_t) p_{env}(o_{t+1} \mid a_t) \vartheta(s_{t+1} = U(s_t, a_t, o_{t+1}))
+\end{aligned}
+$$
+&lt;/div&gt;
+&lt;p&gt;其中 $p_{env}(o_{t+1} \mid a_t)$ 是环境的观测模型，$U(s_t, a_t, o_{t+1})$ 是基于当前状态、采取的行动和收到的观测的状态更新函数。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

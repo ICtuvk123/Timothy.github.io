@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>数学建模 on Timothy&#39;s Blog</title>
+    <link>http://localhost:1313/zh/tags/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/</link>
+    <description>Recent content in 数学建模 on Timothy&#39;s Blog</description>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 16 Jan 2026 10:00:00 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/zh/tags/%E6%95%B0%E5%AD%A6%E5%BB%BA%E6%A8%A1/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>种群方法</title>
+      <link>http://localhost:1313/zh/posts/population_method/</link>
+      <pubDate>Fri, 16 Jan 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/zh/posts/population_method/</guid>
+      <description>深入探讨种群方法</description>
+    </item>
+  </channel>
+</rss>

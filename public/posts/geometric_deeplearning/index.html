@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>An introduction to Geometric Deep Learning | Timothy&#39;s Blog</title>
+<meta name="keywords" content="geometric deep learning, machine learning">
+<meta name="description" content="Evolution of Geometric Deep Learning
+Geometry has been a fundamental part of human knowledge for millennia. The ancient Greeks formalized the study of geometry through Euclid&rsquo;s Elements, Euclid’s monopoly came to an end in the nineteenth century, with examples of non-Euclidean geometries constructed by Lobachevesky, Bolyai, Gauss, and Riemann.
+Towards the end of that century, these studies had diverged into disparate fields, with mathematicians and philosophers debating the validity of and relations between these geometries as well as the nature of the “one true geometry”.">
+<meta name="author" content="Timothy">
+<link rel="canonical" href="http://localhost:1313/posts/geometric_deeplearning/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.2dd7dd100f06b24f3d68c8d71d9065e5e0088bb70c9dac5b8f73c34ee1661edb.css" integrity="sha256-LdfdEA8Gsk89aMjXHZBl5eAIi7cMnaxbj3PDTuFmHts=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/geometric_deeplearning/">
+<link rel="alternate" hreflang="zh" href="http://localhost:1313/zh/posts/geometric_deeplearning/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {
+        delimiters: [
+            {left: '$$', right: '$$', display: true},
+            {left: '$', right: '$', display: false},
+            {left: '\\(', right: '\\)', display: false},
+            {left: '\\[', right: '\\]', display: true}
+        ],
+        ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+        throwOnError: false
+    });"></script>
+<meta property="og:url" content="http://localhost:1313/posts/geometric_deeplearning/">
+  <meta property="og:site_name" content="Timothy&#39;s Blog">
+  <meta property="og:title" content="An introduction to Geometric Deep Learning">
+  <meta property="og:description" content="Evolution of Geometric Deep Learning Geometry has been a fundamental part of human knowledge for millennia. The ancient Greeks formalized the study of geometry through Euclid’s Elements, Euclid’s monopoly came to an end in the nineteenth century, with examples of non-Euclidean geometries constructed by Lobachevesky, Bolyai, Gauss, and Riemann.
+Towards the end of that century, these studies had diverged into disparate fields, with mathematicians and philosophers debating the validity of and relations between these geometries as well as the nature of the “one true geometry”.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-01-17T02:53:59+08:00">
+    <meta property="article:modified_time" content="2026-01-17T02:53:59+08:00">
+    <meta property="article:tag" content="Geometric Deep Learning">
+    <meta property="article:tag" content="Machine Learning">
+    <meta property="og:image" content="http://localhost:1313/geometric_deeplearning/geocover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://localhost:1313/geometric_deeplearning/geocover.png">
+<meta name="twitter:title" content="An introduction to Geometric Deep Learning">
+<meta name="twitter:description" content="Evolution of Geometric Deep Learning
+Geometry has been a fundamental part of human knowledge for millennia. The ancient Greeks formalized the study of geometry through Euclid&rsquo;s Elements, Euclid’s monopoly came to an end in the nineteenth century, with examples of non-Euclidean geometries constructed by Lobachevesky, Bolyai, Gauss, and Riemann.
+Towards the end of that century, these studies had diverged into disparate fields, with mathematicians and philosophers debating the validity of and relations between these geometries as well as the nature of the “one true geometry”.">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "http://localhost:1313/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "An introduction to Geometric Deep Learning",
+      "item": "http://localhost:1313/posts/geometric_deeplearning/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "An introduction to Geometric Deep Learning",
+  "name": "An introduction to Geometric Deep Learning",
+  "description": "Evolution of Geometric Deep Learning Geometry has been a fundamental part of human knowledge for millennia. The ancient Greeks formalized the study of geometry through Euclid\u0026rsquo;s Elements, Euclid’s monopoly came to an end in the nineteenth century, with examples of non-Euclidean geometries constructed by Lobachevesky, Bolyai, Gauss, and Riemann.\nTowards the end of that century, these studies had diverged into disparate fields, with mathematicians and philosophers debating the validity of and relations between these geometries as well as the nature of the “one true geometry”.\n",
+  "keywords": [
+    "geometric deep learning", "machine learning"
+  ],
+  "articleBody": "Evolution of Geometric Deep Learning Geometry has been a fundamental part of human knowledge for millennia. The ancient Greeks formalized the study of geometry through Euclid’s Elements, Euclid’s monopoly came to an end in the nineteenth century, with examples of non-Euclidean geometries constructed by Lobachevesky, Bolyai, Gauss, and Riemann.\nTowards the end of that century, these studies had diverged into disparate fields, with mathematicians and philosophers debating the validity of and relations between these geometries as well as the nature of the “one true geometry”.\nA way out of this pickle was shown by a young mathematician Felix Klein. Klein proposed approaching geometry as the study of invariants, i.e. properties unchanged under some class of transformations, called the symmetries of the geometry. This approach created clarity by showing that various geometries known at the time could be defined by an appropriate choice of symmetry transformations, formalized using the language of group theory.\nA Brief introduction to Deep Learning Remarkably, the essence of deep learning is built from two simple algorithmic principles: first, the notion of representation or feature learning, whereby adapted, often hierarchical, features capture the appropriate notion of regularity for each task, and second, learning by local gradient-descent, typically implemented as backpropagation.\nThe goal of Geometric Deep Learning While learning generic functions in high dimensions is a cursed estimation problem, most tasks of interest are not generic, and come with essential pre-defined regularities arising from the underlying low-dimensionality and structure of the physical world.\nSuch a ‘geometric unification’ endeavour serves a dual purpose: on one hand, it provides a common mathematical framework to study the most successful neural network architectures, such as CNNs, RNNs, GNNs, and Transformers. On the other, it gives a constructive procedure to incorporate prior physical knowledge into neural architectures and provide principled way to build future architectures yet to be invented.\nLearning in High Dimensions Supervised machine learning, in its simplest formalisation, considers a set of N observations $D = \\{(x_i, y_i)\\}_{i=1}^N$ drawn i.i.d. from an underlying data distribution P defined over $\\mathcal{X} \\times \\mathcal{Y}$.\nLet us further assume that the labels y are generated by an unknown function f, such that $y_i = f(x_i)$, and the learning problem reduces to estimating the function f using a parametrised function class $F = \\{f_\\theta \\in \\Theta\\}$.\nmodern deep learning systems typically operate in the so-called interpolating regime, where the estimated $\\widetilde{f} \\in F$ satisfies $\\widetilde{f}(x_i) = f(x_i)$ for all $i = 1, . . . , N$.\nThe performance of a learning algorithm is measured in terms of the expected performance on new samples drawn from $P$, using loss function $L: \\mathcal{Y} \\times \\mathcal{Y} \\rightarrow \\mathbb{R}$: $$ \\mathcal{R} = \\mathbb{E}_{(x,y) \\sim P}[L(\\widetilde{f}(x), f(x))] $$\nSuch constructed functions can approximate almost any function (Universal Approximation Theorem), but this does not mean we do not need inductive biases to constrain the learning problem. Given a function class $\\mathcal{F}$ with universal approximation capabilities, we can define a complexity function: $$c: \\mathcal{F} \\rightarrow \\mathbb{R}$$ defining our interpolation problem as: $$\\widetilde{f} = \\arg\\min_{g \\in \\mathcal{F}} c(g) \\quad s.t. \\quad \\widetilde{f}(x_i) = f(x_i), \\quad i = 1, . . . , N$$\nTherefore, we not only hope for good function fitting but also low function complexity. Such a complexity function is what we call the norm of the function. The benefit of this definition is that $\\mathcal{F}$ becomes a Banach space (a complete vector space equipped with a norm), allowing us to use tools from functional analysis to study their properties.\nGeometric Priors To overcome the “curse of dimensionality” of high-dimensional data, we must utilize the physical characteristics of the data (symmetry and scale separation); although the geometry of the data (Domain) may be complex, the signals defined on it constitute a Hilbert space with good mathematical properties, allowing us to still use tools from linear algebra and functional analysis to handle them.\nFor example, in image processing, data is typically represented as signals (pixel values) defined on a two-dimensional Euclidean space $\\mathbb{R}^2$. This space possesses translation and rotation symmetry, meaning that if we translate or rotate the image, its content and structure remain unchanged. Convolutional Neural Networks (CNNs) exploit this translation symmetry, capturing local features through shared weights, thereby improving learning efficiency and generalization ability.\nSymmetry and Invariance In machine learning, symmetry refers to the property that data or tasks remain unchanged under certain transformations. These transformations can be translation, rotation, scaling, etc. For example, in an image classification task, if we translate or rotate an image, the category of the image usually does not change. This invariance is what we hope the model can capture and utilize.\nSymmetry Groups Symmetry can be formalized through group theory. A group is a set equipped with a binary operation that satisfies properties such as closure, associativity, identity, and inverse.\nSymmetry operations form a group, called a symmetry group, proven as follows:\nClosure: If $g_1$ and $g_2$ are symmetry operations, then their composition $g_1 \\circ g_2$ is also a symmetry operation, because applying two symmetry transformations consecutively still preserves the invariance of the data. Associativity: If $g_1$ and $g_2$ are symmetry operations, then for any $g_3$, $(g_1 \\circ g_2) \\circ g_3 = g_1 \\circ (g_2 \\circ g_3)$, because the order of transformations does not affect the final result. Identity: There exists an identity operation $e$ such that for any symmetry operation $g$, $e \\circ g = g \\circ e = g$. This identity operation corresponds to performing no transformation. Inverse: For every symmetry operation $g$, there exists an inverse operation $g^{-1}$ such that $g \\circ g^{-1} = g^{-1} \\circ g = e$. This inverse operation corresponds to undoing the transformation. Note: $g \\circ h$ denotes applying transformation $g$ first, then transformation $h$.\nLet’s take an equilateral triangle as an example to illustrate the concept of symmetry groups: In this example, the symmetry group of the equilateral triangle contains six elements: three rotation operations (0 degrees, 120 degrees, 240 degrees) and three reflection operations (perpendicular lines through each vertex). These operations satisfy the four properties of a group, thus forming a group called $D_3$, the dihedral group of the triangle. Mathematically, we can view these operations as mappings: $$g: \\mathcal{X} \\rightarrow \\mathcal{X}$$ where $\\mathcal{X}$ is the data space. For each element $g \\in G$ in a symmetry group $G$, we have a corresponding mapping $g$. For example, $D_3$ can also be represented as a matrix group: $$ D_3 = \\left\\{ \\begin{pmatrix} 1 \u0026 2 \u0026 3 \\\\ 1 \u0026 2 \u0026 3 \\end{pmatrix}, \\begin{pmatrix} 1 \u0026 2 \u0026 3 \\\\ 2 \u0026 3 \u0026 1 \\end{pmatrix}, \\begin{pmatrix} 1 \u0026 2 \u0026 3 \\\\ 3 \u0026 1 \u0026 2 \\end{pmatrix}, \\begin{pmatrix} 1 \u0026 2 \u0026 3 \\\\ 1 \u0026 3 \u0026 2 \\end{pmatrix}, \\begin{pmatrix} 1 \u0026 2 \u0026 3 \\\\ 2 \u0026 1 \u0026 3 \\end{pmatrix}, \\begin{pmatrix} 1 \u0026 2 \u0026 3 \\\\ 3 \u0026 2 \u0026 1 \\end{pmatrix} \\right\\} $$\nReferences Bronstein, M. M., Bruna, J., LeCun, Y., Szlam, A., \u0026 Vandergheynst, P. (2017). Geometric deep learning: going beyond Euclidean data. IEEE Signal Processing Magazine, 34(4), 18-42. Goodfellow, I., Bengio, Y., \u0026 Courville, A. (2016). Deep learning. MIT press. Cohen, T. S., \u0026 Welling, M. (2016). Group equivariant convolutional networks. In International conference on machine learning (pp. 2990-2999). PMLR. Kondor, R., \u0026 Trivedi, S. (2018). On the generalization of equivariance and convolution in neural networks to the action of compact groups. In International conference on machine learning (pp. 2747-2755). PMLR. Wood, T., \u0026 Shawe-Taylor, J. (1996). Representation theory and invariant neural networks. Neural computation, 8(5), 1003-1013. Mallat, S. (2016). Understanding deep convolutional networks. Philosophical Transactions of the Royal Society A: Mathematical, Physical and Engineering Sciences, 374(2065), 20150203. Lee, J. M. (2013). Introduction to smooth manifolds. Springer Science \u0026 Business Media. ",
+  "wordCount" : "1285",
+  "inLanguage": "en",
+  "image":"http://localhost:1313/geometric_deeplearning/geocover.png","datePublished": "2026-01-17T02:53:59+08:00",
+  "dateModified": "2026-01-17T02:53:59+08:00",
+  "author":{
+    "@type": "Person",
+    "name": "Timothy"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "http://localhost:1313/posts/geometric_deeplearning/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Timothy's Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "http://localhost:1313/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Timothy&#39;s Blog (Alt + H)">Timothy&#39;s Blog</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+                    <ul class="lang-switch"><li>|</li>
+                        <li>
+                            <a href="http://localhost:1313/zh/" title="中文"
+                                aria-label="中文">Zh</a>
+                        </li>
+                    </ul>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/archives/" title="Archives">
+                    <span>Archives</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/search/" title="Search (Alt &#43; /)" accesskey=/>
+                    <span>Search</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/tags/" title="Tags">
+                    <span>Tags</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      An introduction to Geometric Deep Learning
+    </h1>
+    <div class="post-meta"><span title='2026-01-17 02:53:59 +0800 CST'>January 17, 2026</span>&nbsp;·&nbsp;<span>Timothy</span>&nbsp;|&nbsp;<span>Translations:</span>
+<ul class="i18n_list">
+    <li>
+        <a href="http://localhost:1313/zh/posts/geometric_deeplearning/">Zh</a>
+    </li>
+</ul>
+
+</div>
+  </header> 
+<figure class="entry-cover">
+        <img loading="eager" src="http://localhost:1313/geometric_deeplearning/geocover.png" alt="">
+        
+</figure>
+  <div class="post-content"><h2 id="evolution-of-geometric-deep-learning">Evolution of Geometric Deep Learning<a hidden class="anchor" aria-hidden="true" href="#evolution-of-geometric-deep-learning">#</a></h2>
+<p>Geometry has been a fundamental part of human knowledge for millennia. The ancient Greeks formalized the study of geometry through Euclid&rsquo;s <em>Elements</em>, Euclid’s monopoly came to an end in the nineteenth century, with examples of non-Euclidean geometries constructed by Lobachevesky, Bolyai, Gauss, and Riemann.</p>
+<p>Towards the end of that century, these studies had diverged into disparate fields, with mathematicians and philosophers debating the validity of and relations between these geometries as well as the nature of the “one true geometry”.</p>
+<p>A way out of this pickle was shown by a young mathematician Felix Klein. Klein proposed approaching geometry as the study of invariants, i.e. properties unchanged under some class of transformations, called the symmetries of the geometry. This approach created clarity by showing that various geometries known at the time could be defined by an appropriate choice of symmetry transformations, formalized using the language of group theory.</p>
+<h2 id="a-brief-introduction-to-deep-learning">A Brief introduction to Deep Learning<a hidden class="anchor" aria-hidden="true" href="#a-brief-introduction-to-deep-learning">#</a></h2>
+<p>Remarkably, the essence of deep learning is built from two simple algorithmic principles: first, the notion of representation or feature learning, whereby adapted, often hierarchical, features capture the appropriate notion of regularity for each task, and second, learning by local gradient-descent, typically implemented as backpropagation.</p>
+<h2 id="the-goal-of-geometric-deep-learning">The goal of Geometric Deep Learning<a hidden class="anchor" aria-hidden="true" href="#the-goal-of-geometric-deep-learning">#</a></h2>
+<p>While learning generic functions in high dimensions is a cursed estimation problem, most tasks of interest are not generic, and come with essential pre-defined regularities arising from the underlying low-dimensionality and structure of the physical world.</p>
+<p>Such a &lsquo;geometric unification&rsquo; endeavour serves a dual purpose: on one hand, it provides a common mathematical framework to study the most successful neural network architectures, such as CNNs, RNNs, GNNs, and Transformers. On the other, it gives a constructive procedure to incorporate prior physical knowledge into neural architectures and provide principled way to build future architectures yet to be invented.</p>
+<h2 id="learning-in-high-dimensions">Learning in High Dimensions<a hidden class="anchor" aria-hidden="true" href="#learning-in-high-dimensions">#</a></h2>
+<p>Supervised machine learning, in its simplest formalisation, considers a set of N observations $D = \{(x_i, y_i)\}_{i=1}^N$ drawn i.i.d. from an underlying data distribution P defined over $\mathcal{X} \times \mathcal{Y}$.</p>
+<p>Let us further assume that the labels y are generated by an unknown function f, such that $y_i = f(x_i)$, and the learning problem reduces to estimating the function f using a parametrised function class $F = \{f_\theta \in \Theta\}$.</p>
+<p>modern deep learning systems typically operate in the so-called interpolating regime, where the estimated $\widetilde{f} \in F$ satisfies $\widetilde{f}(x_i) = f(x_i)$ for all $i = 1, . . . , N$.</p>
+<p>The performance of a learning algorithm is measured in terms of the expected performance on new samples drawn from $P$, using loss function $L: \mathcal{Y} \times \mathcal{Y} \rightarrow \mathbb{R}$:
+$$ \mathcal{R} = \mathbb{E}_{(x,y) \sim P}[L(\widetilde{f}(x), f(x))] $$</p>
+<p>Such constructed functions can approximate almost any function (Universal Approximation Theorem), but this does not mean we do not need inductive biases to constrain the learning problem. Given a function class $\mathcal{F}$ with universal approximation capabilities, we can define a complexity function:
+$$c: \mathcal{F} \rightarrow \mathbb{R}$$
+defining our interpolation problem as:
+$$\widetilde{f} = \arg\min_{g \in \mathcal{F}} c(g) \quad s.t. \quad \widetilde{f}(x_i) = f(x_i), \quad i = 1, . . . , N$$</p>
+<p><img alt="Universal Approximation Theorem Diagram" loading="lazy" src="/geometric_deeplearning/geometric01.png"></p>
+<p>Therefore, we not only hope for good function fitting but also low function complexity. Such a complexity function is what we call the norm of the function.
+The benefit of this definition is that $\mathcal{F}$ becomes a Banach space (a complete vector space equipped with a norm), allowing us to use tools from functional analysis to study their properties.</p>
+<h2 id="geometric-priors">Geometric Priors<a hidden class="anchor" aria-hidden="true" href="#geometric-priors">#</a></h2>
+<p>To overcome the &ldquo;curse of dimensionality&rdquo; of high-dimensional data, we must utilize the physical characteristics of the data (symmetry and scale separation); although the geometry of the data (Domain) may be complex, the signals defined on it constitute a Hilbert space with good mathematical properties, allowing us to still use tools from linear algebra and functional analysis to handle them.</p>
+<p>For example, in image processing, data is typically represented as signals (pixel values) defined on a two-dimensional Euclidean space $\mathbb{R}^2$. This space possesses translation and rotation symmetry, meaning that if we translate or rotate the image, its content and structure remain unchanged. Convolutional Neural Networks (CNNs) exploit this translation symmetry, capturing local features through shared weights, thereby improving learning efficiency and generalization ability.</p>
+<h2 id="symmetry-and-invariance">Symmetry and Invariance<a hidden class="anchor" aria-hidden="true" href="#symmetry-and-invariance">#</a></h2>
+<p>In machine learning, symmetry refers to the property that data or tasks remain unchanged under certain transformations. These transformations can be translation, rotation, scaling, etc.
+For example, in an image classification task, if we translate or rotate an image, the category of the image usually does not change. This invariance is what we hope the model can capture and utilize.</p>
+<h3 id="symmetry-groups">Symmetry Groups<a hidden class="anchor" aria-hidden="true" href="#symmetry-groups">#</a></h3>
+<p>Symmetry can be formalized through group theory. A group is a set equipped with a binary operation that satisfies properties such as closure, associativity, identity, and inverse.</p>
+<p>Symmetry operations form a group, called a symmetry group, proven as follows:</p>
+<ol>
+<li><strong>Closure</strong>: If $g_1$ and $g_2$ are symmetry operations, then their composition $g_1 \circ g_2$ is also a symmetry operation, because applying two symmetry transformations consecutively still preserves the invariance of the data.</li>
+<li><strong>Associativity</strong>: If $g_1$ and $g_2$ are symmetry operations, then for any $g_3$, $(g_1 \circ g_2) \circ g_3 = g_1 \circ (g_2 \circ g_3)$, because the order of transformations does not affect the final result.</li>
+<li><strong>Identity</strong>: There exists an identity operation $e$ such that for any symmetry operation $g$, $e \circ g = g \circ e = g$. This identity operation corresponds to performing no transformation.</li>
+<li><strong>Inverse</strong>: For every symmetry operation $g$, there exists an inverse operation $g^{-1}$ such that $g \circ g^{-1} = g^{-1} \circ g = e$. This inverse operation corresponds to undoing the transformation.</li>
+</ol>
+<p>Note: $g \circ h$ denotes applying transformation $g$ first, then transformation $h$.</p>
+<p>Let&rsquo;s take an equilateral triangle as an example to illustrate the concept of symmetry groups:
+<img alt="Symmetry group of an equilateral triangle" loading="lazy" src="/geometric_deeplearning/geometric02.png"></p>
+<p>In this example, the symmetry group of the equilateral triangle contains six elements: three rotation operations (0 degrees, 120 degrees, 240 degrees) and three reflection operations (perpendicular lines through each vertex). These operations satisfy the four properties of a group, thus forming a group called $D_3$, the dihedral group of the triangle.
+Mathematically, we can view these operations as mappings:
+$$g: \mathcal{X} \rightarrow \mathcal{X}$$
+where $\mathcal{X}$ is the data space. For each element $g \in G$ in a symmetry group $G$, we have a corresponding mapping $g$.
+For example, $D_3$ can also be represented as a matrix group:
+$$
+D_3 = \left\{
+\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 1 &amp; 2 &amp; 3 \end{pmatrix},
+\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 2 &amp; 3 &amp; 1 \end{pmatrix},
+\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 3 &amp; 1 &amp; 2 \end{pmatrix},
+\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 1 &amp; 3 &amp; 2 \end{pmatrix},
+\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 2 &amp; 1 &amp; 3 \end{pmatrix},
+\begin{pmatrix} 1 &amp; 2 &amp; 3 \\ 3 &amp; 2 &amp; 1 \end{pmatrix}
+\right\}
+$$</p>
+<h2 id="references">References<a hidden class="anchor" aria-hidden="true" href="#references">#</a></h2>
+<ol>
+<li>Bronstein, M. M., Bruna, J., LeCun, Y., Szlam, A., &amp; Vandergheynst, P. (2017). Geometric deep learning: going beyond Euclidean data. <em>IEEE Signal Processing Magazine</em>, 34(4), 18-42.</li>
+<li>Goodfellow, I., Bengio, Y., &amp; Courville, A. (2016). <em>Deep learning</em>. MIT press.</li>
+<li>Cohen, T. S., &amp; Welling, M. (2016). Group equivariant convolutional networks. In <em>International conference on machine learning</em> (pp. 2990-2999). PMLR.</li>
+<li>Kondor, R., &amp; Trivedi, S. (2018). On the generalization of equivariance and convolution in neural networks to the action of compact groups. In <em>International conference on machine learning</em> (pp. 2747-2755). PMLR.</li>
+<li>Wood, T., &amp; Shawe-Taylor, J. (1996). Representation theory and invariant neural networks. <em>Neural computation</em>, 8(5), 1003-1013.</li>
+<li>Mallat, S. (2016). Understanding deep convolutional networks. <em>Philosophical Transactions of the Royal Society A: Mathematical, Physical and Engineering Sciences</em>, 374(2065), 20150203.</li>
+<li>Lee, J. M. (2013). <em>Introduction to smooth manifolds</em>. Springer Science &amp; Business Media.</li>
+</ol>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/geometric-deep-learning/">Geometric Deep Learning</a></li>
+      <li><a href="http://localhost:1313/tags/machine-learning/">Machine Learning</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="http://localhost:1313/">Timothy&#39;s Blog</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
+</html>

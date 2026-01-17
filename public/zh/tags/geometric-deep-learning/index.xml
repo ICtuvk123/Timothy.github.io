@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Geometric Deep Learning on Timothy&#39;s Blog</title>
+    <link>http://localhost:1313/zh/tags/geometric-deep-learning/</link>
+    <description>Recent content in Geometric Deep Learning on Timothy&#39;s Blog</description>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>zh</language>
+    <lastBuildDate>Sat, 17 Jan 2026 02:53:59 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/zh/tags/geometric-deep-learning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>几何深度学习简介</title>
+      <link>http://localhost:1313/zh/posts/geometric_deeplearning/</link>
+      <pubDate>Sat, 17 Jan 2026 02:53:59 +0800</pubDate>
+      <guid>http://localhost:1313/zh/posts/geometric_deeplearning/</guid>
+      <description>&lt;h2 id=&#34;几何深度学习的演变&#34;&gt;几何深度学习的演变&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;几千年来，几何学一直是人类知识的基本组成部分。古希腊人通过欧几里得的《几何原本》将几何学研究形式化。欧几里得的垄断地位在十九世纪结束了，罗巴切夫斯基、波尔约、高斯和黎曼等人分别构建了非欧几里得几何。
+
+到了那个世纪末，这些研究已经分化成不同的领域，数学家和哲学家们争论这些几何的有效性和相互关系，以及“唯一真实几何”的本质。
+
+年轻的数学家菲利克斯·克莱因指出了摆脱这种困境的出路。克莱因提议将几何学作为不变量的研究，即在某类变换（称为几何的对称性）下保持不变的性质。这种方法通过表明当时已知的各种几何可以通过选择适当的对称变换来定义（使用群论语言形式化），从而创造了清晰度。
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;深度学习简介&#34;&gt;深度学习简介&lt;/h2&gt;
+&lt;p&gt;值得注意的是，深度学习的本质建立在两个简单的算法原则之上：第一，表示或特征学习的概念，即适应性的、通常是分层的特征捕捉每个任务的适当规律性概念；第二，通过局部梯度下降进行学习，通常实现为反向传播。&lt;/p&gt;
+&lt;h2 id=&#34;几何深度学习的目标&#34;&gt;几何深度学习的目标&lt;/h2&gt;
+&lt;p&gt;虽然在高维空间学习通用函数是一个棘手的估计问题，但大多数感兴趣的任务并不是通用的，并且带有源于物理世界底层低维性和结构的基本预定义规律。&lt;/p&gt;
+&lt;p&gt;这种“几何统一”的努力具有双重目的：一方面，它提供了一个通用的数学框架来研究最成功的神经网络架构，如 CNN、RNN、GNN 和 Transformer。另一方面，它提供了一个建设性的程序，将先验物理知识融入神经架构，并为构建尚未发明的未来架构提供了原则性的方法。&lt;/p&gt;
+&lt;h2 id=&#34;高维学习&#34;&gt;高维学习&lt;/h2&gt;
+&lt;p&gt;监督机器学习，在其最简单的形式化中，考虑一组 N 个观测值 $D = {(x_i, y_i)}_{i=1}^N$，这些观测值是从定义在 $\mathcal{X} \times \mathcal{Y}$ 上的底层数据分布 P 中独立同分布 (i.i.d.) 抽取的。&lt;/p&gt;
+&lt;p&gt;让我们进一步假设标签 y 是由未知函数 f 生成的，使得 $y_i = f(x_i)$，并且学习问题简化为使用参数化函数类 $F = {f_\theta \in \Theta}$ 来估计函数 f。&lt;/p&gt;
+&lt;p&gt;现代深度学习系统通常在所谓的插值机制中运行，其中估计的 $\widetilde{f}$ $\in F$ 满足 $\widetilde{f}(x_i) = f(x_i)$ 对于所有 $i = 1, . . . , N$。&lt;/p&gt;
+&lt;p&gt;学习算法的性能是根据从 $P$ 中抽取的样本的预期性能来衡量的，使用损失函数 $L: \mathcal{Y} \times \mathcal{Y} \rightarrow \mathbb{R}$：&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -6,8 +6,17 @@
     <description>Recent content on Timothy&#39;s Blog</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>en</language>
-    <lastBuildDate>Fri, 16 Jan 2026 10:00:00 +0800</lastBuildDate>
+    <lastBuildDate>Sat, 17 Jan 2026 02:53:59 +0800</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>An introduction to Geometric Deep Learning</title>
+      <link>http://localhost:1313/posts/geometric_deeplearning/</link>
+      <pubDate>Sat, 17 Jan 2026 02:53:59 +0800</pubDate>
+      <guid>http://localhost:1313/posts/geometric_deeplearning/</guid>
+      <description>&lt;h2 id=&#34;evolution-of-geometric-deep-learning&#34;&gt;Evolution of Geometric Deep Learning&lt;/h2&gt;
+&lt;p&gt;Geometry has been a fundamental part of human knowledge for millennia. The ancient Greeks formalized the study of geometry through Euclid&amp;rsquo;s &lt;em&gt;Elements&lt;/em&gt;, Euclid’s monopoly came to an end in the nineteenth century, with examples of non-Euclidean geometries constructed by Lobachevesky, Bolyai, Gauss, and Riemann.&lt;/p&gt;
+&lt;p&gt;Towards the end of that century, these studies had diverged into disparate fields, with mathematicians and philosophers debating the validity of and relations between these geometries as well as the nature of the “one true geometry”.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Introduction to Reinforcement Learning</title>
       <link>http://localhost:1313/posts/reinforcement_learning01/</link>
@@ -31,9 +40,10 @@
       <pubDate>Thu, 15 Jan 2026 15:08:59 +0800</pubDate>
       <guid>http://localhost:1313/posts/first-post/</guid>
       <description>&lt;p&gt;Welcome to my first blog post! This is where I will share my thoughts, experiences, and updates. Stay tuned for more content!&lt;/p&gt;
+&lt;h2 id=&#34;about-the-language&#34;&gt;About the language&lt;/h2&gt;
+&lt;p&gt;I will be writing my posts in Chinese to reach a broader audience. However, I may include English terms and phrases where necessary for clarity. And of course, English versions of some posts may be provided in the future.&lt;/p&gt;
 &lt;hr&gt;
-&lt;p&gt;Feel free to leave comments and share your feedback. Looking forward to connecting with you all!&lt;/p&gt;
-&lt;p&gt;Happy blogging!&lt;/p&gt;</description>
+&lt;p&gt;Feel free to leave comments and share your feedback. Looking forward to connecting with you all!&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

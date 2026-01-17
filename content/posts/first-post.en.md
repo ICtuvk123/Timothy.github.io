@@ -12,6 +12,10 @@ title = 'First Post'
 
 Welcome to my first blog post! This is where I will share my thoughts, experiences, and updates. Stay tuned for more content!
 
+## About the language
+
+I will be writing my posts in Chinese to reach a broader audience. However, I may include English terms and phrases where necessary for clarity. And of course, English versions of some posts may be provided in the future.
+
 ---
 Feel free to leave comments and share your feedback. Looking forward to connecting with you all!
 
